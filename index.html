@@ -366,9 +366,11 @@ h2.sec{font:italic 800 26px 'Barlow Condensed',sans-serif;text-transform:upperca
 <div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
 <div id="ghost"></div>
 <div id="toast" role="status"></div>
+<input type="file" id="restorefile" accept=".json,application/json" hidden>
 
 <script>
 {
+const APP_VERSION='1.8',APP_DATE='25 Nov 2026';
 const KEY='kj-lineup-v2',MKEY='kj-matches-v1',MAX=20;
 const SHIRT='M30 8 42 4q8 9 16 0l12 4 24 16-10 18-10-6v58H26V36l-10 6L6 24Z';
 const PITCH=`<svg class="lines" viewBox="0 0 64 100" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="60" height="96"/><line x1="2" y1="50" x2="62" y2="50"/><circle cx="32" cy="50" r="7"/><circle class="dot" cx="32" cy="50" r=".6"/><rect x="14" y="2" width="36" height="14"/><rect x="23" y="2" width="18" height="5"/><circle class="dot" cx="32" cy="11" r=".5"/><path d="M27.1 16A7 7 0 0 0 36.9 16"/><rect x="14" y="84" width="36" height="14"/><rect x="23" y="93" width="18" height="5"/><circle class="dot" cx="32" cy="89" r=".5"/><path d="M27.1 84A7 7 0 0 1 36.9 84"/><rect x="28" y=".6" width="8" height="1.4"/><rect x="28" y="98" width="8" height="1.4"/></svg>`;
@@ -1216,6 +1218,31 @@ function matchForm(orig){
   });
 }
 
+/* ---------- backup & restore ---------- */
+function backupData(){
+  const data={app:'knowle-jackals',version:APP_VERSION,savedAt:new Date().toISOString(),state:clone(S),matches:clone(M)};
+  saveFile(slug(S.team+' backup '+new Date().toISOString().slice(0,10))+'.json',new Blob([JSON.stringify(data,null,1)],{type:'application/json'}),'application/json');
+}
+$('restorefile').addEventListener('change',async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;
+  let d;try{d=JSON.parse(await f.text())}catch(err){return toast('That file isn’t a backup from this app')}
+  if(!d||d.app!=='knowle-jackals'||!d.state||!Array.isArray(d.state.players)||!Array.isArray(d.matches))return toast('That file isn’t a backup from this app');
+  const when=d.savedAt?new Date(d.savedAt).toLocaleString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'unknown date';
+  modal(`<h3>Restore backup?</h3><p style="margin:0 0 8px">Backup from <b>${esc(when)}</b> (app version ${esc(d.version||'?')}): ${d.state.players.length} players and ${d.matches.length} results.</p>
+    <p class="note">This replaces the squad, settings and every result saved now (${S.players.length} players, ${M.length} results). Back up first if you might want today’s data back.</p>
+    <div class="bar"><button class="btn" data-close>Cancel</button><button class="btn go" id="rb-go">Restore backup</button></div>`,()=>{
+    $('rb-go').onclick=async()=>{
+      const b=$('rb-go');if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Tap again to replace everything';return}
+      b.disabled=true;
+      try{
+        const keep=new Set(d.matches.map(m=>m.id));
+        if(db){for(const m of d.matches)await db.collection('matches').doc(m.id).set(clone(m));for(const m of M.filter(m=>!keep.has(m.id)))await db.doc('matches/'+m.id).delete()}
+        else{M=clone(d.matches);sortM();saveM()}
+        S=normalize(clone(d.state));hist=[];sel=null;viewSeason=null;save();fillFix();renderAll();renderSquad();closeModal();toast('Backup restored');
+      }catch(err){b.disabled=false;toast('Restore didn’t finish — try again')}
+    };
+  });
+});
 /* ---------- seasons ---------- */
 function closeSeason(){
   if(S.live)return toast('Finish or discard the match in progress first');
@@ -1269,13 +1296,14 @@ $('menubtn').onclick=()=>{
   if(tab==='stats'&&prevS&&!M.some(m=>seasonOf(m)===S.curSeason))it.push(['reopen','Reopen '+prevS.name,'Undo closing the last season']);
   if(tab==='stats'&&M.length)it.push(['statimg','Share stats image',''],['expr','Export results','Spreadsheet (CSV)'],['expp','Export player stats','Spreadsheet (CSV)']);
   if(tab==='stats')it.push(['close','Close season',`End ${curS.name} and start the next`,1]);
+  it.push(['backup','Back up all data','Squad, settings and every result'],['restore','Restore from a backup','Replaces what is saved now']);
   modal(`<h3>${tab==='lineup'?'Line-up':tab==='match'?'Match':'Stats'} options</h3><div class="menu">${it.map(([k,l,sub,d])=>`<button type="button" data-m="${k}" class="${d?'danger':''}"><span>${l}</span>${sub?`<small>${esc(sub)}</small>`:''}</button>`).join('')}</div>
-    <p class="menufoot"><i></i>${esc($('sync').textContent)}</p>`,()=>{
+    <p class="menufoot"><i></i>${esc($('sync').textContent)}<span style="margin-left:auto">Version ${APP_VERSION} · ${APP_DATE}</span></p>`,()=>{
     $('sheet').querySelector('.menu').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;const k=b.dataset.m;closeModal();
       ({fmt:()=>openPanel('fmtcard','Team size and formation'),settings:()=>openPanel('setcard','Team settings'),sheet:shareSheet,bc:openBC,clear:()=>$('clear').click(),
         discard:()=>{const d=document.querySelector('[data-a="discard"]');d&&d.click()},add:()=>matchForm(null),
         statimg:()=>shareImage('Season stats',drawStats,statsText(),slug(S.team+' '+seasonName(VS())+' stats')+'.png'),
-        expr:()=>exportCSV('results'),expp:()=>exportCSV('players'),close:closeSeason,rename:renameSeason,reopen:reopenSeason})[k]();
+        expr:()=>exportCSV('results'),expp:()=>exportCSV('players'),close:closeSeason,rename:renameSeason,reopen:reopenSeason,backup:backupData,restore:()=>$('restorefile').click()})[k]();
     });
   });
 };
