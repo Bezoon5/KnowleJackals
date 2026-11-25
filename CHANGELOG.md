@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **1.9** (current) | 25 Nov 2026 | Better match screen (half length, half-time and full-time alerts, Make a sub, Undo last goal), player cards, live score bar on every tab, sideways broadcast view | [v1.9](https://bezoon5.github.io/KnowleJackals/versions/v1.9/) |
+| **1.10** (current) | 25 Nov 2026 | Substitution tracking is now an option (off by default); broadcast view fills the screen on phones, tablets and TVs, with full screen; button rows fit on one line | [v1.10](https://bezoon5.github.io/KnowleJackals/versions/v1.10/) |
+| 1.9 | 25 Nov 2026 | Better match screen (half length, half-time and full-time alerts, Make a sub, Undo last goal), player cards, live score bar on every tab, sideways broadcast view | [v1.9](https://bezoon5.github.io/KnowleJackals/versions/v1.9/) |
 | 1.8 | 25 Nov 2026 | Back up and restore all data; version number shown in the ••• menu | [v1.8](https://bezoon5.github.io/KnowleJackals/versions/v1.8/) |
 | 1.7 | 25 Nov 2026 | Seasons: close a season, start the next, view past seasons | [v1.7](https://bezoon5.github.io/KnowleJackals/versions/v1.7/) |
 | 1.6 | 25 Nov 2026 | League and Cup filter on the Stats tab | [v1.6](https://bezoon5.github.io/KnowleJackals/versions/v1.6/) |
