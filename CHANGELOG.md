@@ -1,0 +1,21 @@
+# Versions
+
+Each version can still be opened at its own link. If an update breaks something, open the previous version's link and carry on. Your squad and results on that phone are shared between all versions.
+
+| Version | Date | What changed | Open it |
+|---|---|---|---|
+| **1.8** (current) | 25 Nov 2026 | Back up and restore all data; version number shown in the ••• menu | [v1.8](https://bezoon5.github.io/KnowleJackals/versions/v1.8/) |
+| 1.7 | 25 Nov 2026 | Seasons: close a season, start the next, view past seasons | [v1.7](https://bezoon5.github.io/KnowleJackals/versions/v1.7/) |
+| 1.6 | 25 Nov 2026 | League and Cup filter on the Stats tab | [v1.6](https://bezoon5.github.io/KnowleJackals/versions/v1.6/) |
+| 1.5 | 25 Nov 2026 | ••• options menu, Home/Away and League/Cup fixture form, green keeper shirt | [v1.5](https://bezoon5.github.io/KnowleJackals/versions/v1.5/) |
+| 1.4 | 25 Nov 2026 | Goalkeeper stats, season stats image, crest home-screen icon | [v1.4](https://bezoon5.github.io/KnowleJackals/versions/v1.4/) |
+| 1.3 | 25 Nov 2026 | Squad and season results built in, blank shirt numbers | [v1.3](https://bezoon5.github.io/KnowleJackals/versions/v1.3/) |
+| 1.2 | 25 Nov 2026 | Penalties, CSV exports | Git tag `v1.2` |
+| 1.1 | 25 Nov 2026 | Injured and away players | Git tag `v1.1` |
+| 1.0 | 25 Nov 2026 | First version | Git tag `v1.0` |
+
+## Rolling back the main link
+To make https://bezoon5.github.io/KnowleJackals/ itself go back to an older version, ask Claude to "roll the app back to version X". Claude copies that version's `index.html` back to the top of the repo, so nothing in the history is lost. The same applies to the Claude version of the app.
+
+## Backups
+Version numbers protect the app; backups protect your data. Use **••• → Back up all data** now and then (for example, at the end of each month and before closing a season). **••• → Restore from a backup** puts everything back as it was when the backup was made.

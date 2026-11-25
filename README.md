@@ -2,6 +2,8 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
+Current version: **1.8**. If an update breaks something, see [CHANGELOG.md](CHANGELOG.md) for links to every earlier version.
+
 A matchday app for Knowle Jackals: pick the line-up, run the match clock, log goals and assists, and keep season stats.
 
 Open `index.html` in a browser, or turn on GitHub Pages (Settings → Pages → Deploy from branch → `main` / root) to get a shareable link.
