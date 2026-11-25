@@ -333,7 +333,7 @@ function normalize(s){
   s.live=s.live||null;return s;
 }
 function seed(){
-  S=normalize({players:SAMPLE.map(([num,name],i)=>({id:'p'+(i+1),num,name})),cap:'p8',pos:{},format:9,form:'3-3-2',sample:true});
+  S=normalize({players:SAMPLE.map(([num,name],i)=>({id:'p'+(i+1),num,name})),cap:null,pos:{},format:9,form:'3-3-2',sample:false});
   applyForm('3-3-2',true);
 }
 function loadLocal(){
