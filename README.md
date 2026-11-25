@@ -15,4 +15,4 @@ Open `index.html` in a browser, or turn on GitHub Pages (Settings → Pages → 
 - **Team settings**: change the team name and crest, and the home-game defaults.
 
 ## Where data is saved
-When it runs on GitHub Pages, the squad and match history are saved in **that browser on that device** (localStorage). Each coach's phone keeps its own copy. Clearing browser data removes it.
+The first time it's opened on a device, the app loads the current squad and this season's results (to 25 Nov 2026). After that, changes are saved in **that browser on that device** (localStorage). Each coach's phone keeps its own copy, and clearing browser data takes it back to the starting data.
