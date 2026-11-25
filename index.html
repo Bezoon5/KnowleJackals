@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Knowle Jackals Matchday</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png" id="appicon">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Jackals">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b0b0c">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,800&family=Barlow:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -135,6 +142,7 @@ input[type=text],input[type=date],input[type=time],select{min-height:44px;font-s
 .tile span{color:var(--mut);font-size:14px}
 .tile.hi{background:var(--red);border-color:var(--red)}
 .tile.hi span{color:#fff}
+.gkcard{margin-bottom:10px}.gkname{display:flex;align-items:center;gap:8px;font:800 24px 'Barlow Condensed',sans-serif;text-transform:uppercase;margin-bottom:10px}.gkname .ico{width:28px;height:28px}
 .form{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:14px 0 0;color:var(--mut);font-size:14px}
 .pill{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:6px;font:800 17px 'Barlow Condensed',sans-serif;color:#fff}
 .pill.W{background:var(--win)}.pill.D{background:var(--draw)}.pill.L{background:#000;border:2px solid var(--red)}
@@ -330,6 +338,7 @@ const ICON={
   inj:'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(-45 12 12)"><rect x="1.5" y="7.5" width="21" height="9" rx="4.5" fill="#f3c9a0" stroke="#6b4426" stroke-width="1.2"/><rect x="8.5" y="7.5" width="7" height="9" fill="#fff4e6" stroke="#6b4426" stroke-width="1.2"/><circle cx="4.6" cy="10.6" r=".8" fill="#6b4426"/><circle cx="4.6" cy="13.4" r=".8" fill="#6b4426"/><circle cx="19.4" cy="10.6" r=".8" fill="#6b4426"/><circle cx="19.4" cy="13.4" r=".8" fill="#6b4426"/></g></svg>',
   away:`<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="${PLANE}" fill="#9fd3ff" transform="rotate(45 12 12)"/></svg>`};
 const ST={inj:'Injured',away:'Away'};
+ICON.gk='<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21h9a4 4 0 0 0 4-4v-6a2 2 0 0 0-4 0V5a1.6 1.6 0 0 0-3.2 0V4a1.6 1.6 0 0 0-3.2 0v1.2a1.6 1.6 0 0 0-3.2 0V12l-1-1.4a1.7 1.7 0 0 0-2.8 2L7 21z" fill="#ffd84d" stroke="#5a4a00" stroke-width="1"/></svg>';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dist=(a,b)=>Math.hypot((a.x-b.x)*.64,a.y-b.y);
 const surname=n=>{const w=String(n).trim().split(/\s+/);return w[w.length-1]||'?'};
@@ -390,7 +399,7 @@ function applyForm(f,fill){
   S.form=f;
   const sl=slots(f).sort((a,b)=>b.y-a.y||a.x-b.x);
   let ids=onPitch().sort((a,b)=>S.pos[b].y-S.pos[a].y||S.pos[a].x-S.pos[b].x);
-  if(fill)ids=ids.concat(S.players.filter(p=>!S.pos[p.id]&&!p.st).sort(byNum).map(p=>p.id));
+  if(fill){const keep=ids.length?[]:S.players.filter(p=>p.gk&&!p.st).map(p=>p.id);ids=keep.concat(ids,S.players.filter(p=>!S.pos[p.id]&&!p.st&&!keep.includes(p.id)).sort(byNum).map(p=>p.id))}
   S.pos={};ids.slice(0,sl.length).forEach((id,i)=>S.pos[id]={...sl[i]});
 }
 function roles(){
@@ -426,12 +435,13 @@ function renderLineup(){
 }
 function renderSquad(){
   $('sqn').textContent=`${S.players.length} players`;
-  $('squad').innerHTML=S.players.slice().sort(byNum).map(p=>`<div class="row" data-id="${p.id}"><input type="text" class="num" inputmode="numeric" maxlength="2" value="${esc(p.num)}" aria-label="Shirt number"><input type="text" class="nm" value="${esc(p.name)}" aria-label="Player name"><button type="button" class="x" aria-label="Remove ${esc(p.name)}">×</button><div class="tags"><label class="tag${S.cap===p.id?' on':''}"><input type="radio" name="cap" ${S.cap===p.id?'checked':''}>Captain</label><button type="button" class="tag${p.st==='inj'?' on':''}" data-st="inj" aria-pressed="${p.st==='inj'}">${ICON.inj}Injured</button><button type="button" class="tag${p.st==='away'?' on':''}" data-st="away" aria-pressed="${p.st==='away'}">${ICON.away}Away</button></div></div>`).join('');
+  $('squad').innerHTML=S.players.slice().sort(byNum).map(p=>`<div class="row" data-id="${p.id}"><input type="text" class="num" inputmode="numeric" maxlength="2" value="${esc(p.num)}" aria-label="Shirt number"><input type="text" class="nm" value="${esc(p.name)}" aria-label="Player name"><button type="button" class="x" aria-label="Remove ${esc(p.name)}">×</button><div class="tags"><label class="tag${S.cap===p.id?' on':''}"><input type="radio" name="cap" ${S.cap===p.id?'checked':''}>Captain</label><button type="button" class="tag${p.st==='inj'?' on':''}" data-st="inj" aria-pressed="${p.st==='inj'}">${ICON.inj}Injured</button><button type="button" class="tag${p.st==='away'?' on':''}" data-st="away" aria-pressed="${p.st==='away'}">${ICON.away}Away</button><button type="button" class="tag${p.gk?' on':''}" data-gk aria-pressed="${!!p.gk}">${ICON.gk}Goalkeeper</button></div></div>`).join('');
   $('addf').querySelector('button').disabled=S.players.length>=MAX;
 }
 function fillFix(){for(const k in S.fix){const el=$('f-'+k);if(el)el.value=S.fix[k]||''}}
 const crestSrc=()=>S.crest&&/^data:image\//.test(S.crest)?S.crest:'crest.png';
 function brand(){
+  const ai=$('appicon');if(ai){const want=S.crest&&/^data:image\//.test(S.crest)?S.crest:'apple-touch-icon.png';if(ai.getAttribute('href')!==want)ai.setAttribute('href',want)}
   document.querySelectorAll('img.crestimg').forEach(i=>{if(i.getAttribute('src')!==crestSrc())i.src=crestSrc()});
   $('tname').textContent=S.team;$('tsub').textContent=S.sub;
   for(const k of ['team','short','sub']){const el=$('s-'+k);if(el&&document.activeElement!==el)el.value=S[k]}
@@ -515,6 +525,8 @@ $('squad').addEventListener('change',e=>{
   save();renderAll();if(e.target.type==='radio')renderSquad();
 });
 $('squad').addEventListener('click',e=>{
+  const gkb=e.target.closest('[data-gk]');
+  if(gkb){const p=byId(gkb.closest('.row').dataset.id);commit();if(p.gk)delete p.gk;else p.gk=true;save();renderAll();renderSquad();return}
   const t=e.target.closest('[data-st]');
   if(t){const p=byId(t.closest('.row').dataset.id),v=t.dataset.st;commit();p.st=p.st===v?undefined:v;if(!p.st)delete p.st;else{delete S.pos[p.id];if(S.cap===p.id)toast(p.name+' is captain — pick another for this week')}if(sel===p.id)sel=null;save();renderAll();renderSquad();return}
   const b=e.target.closest('.x');if(!b)return;const id=b.closest('.row').dataset.id;
@@ -572,7 +584,7 @@ $('ctl').addEventListener('click',e=>{
   const a=e.target.closest('[data-a]')?.dataset.a;if(!a)return;const L=S.live,now=Date.now();
   if(a==='ko'){
     if(!onPitch().length)return toast('Pick your line-up first');
-    S.live={acc:0,startedAt:now,running:true,half:1,htAt:-1,events:[],played:onPitch(),lineup:roles().list,cap:S.cap,format:N()};
+    S.live={acc:0,startedAt:now,running:true,half:1,htAt:-1,events:[],played:onPitch(),lineup:roles().list,cap:S.cap,format:N(),gk:Object.keys(roles().r).find(id=>roles().r[id]==='GK')||null};
   }
   if(a==='pause'||a==='ht'){L.acc+=now-L.startedAt;L.running=false;if(a==='ht'){L.half=2;L.htAt=L.acc}}
   if(a==='resume'){L.startedAt=now;L.running=true}
@@ -623,7 +635,7 @@ function finishModal(){
       const snapP=id=>{const p=byId(id);return p?{id,name:p.name,num:p.num}:null};
       const f=S.fix,m={id:'m'+Date.now().toString(36),finishedAt:Date.now(),date:f.date||new Date().toISOString().slice(0,10),ko:f.ko,opp:oppName(),ha:f.ha,venue:f.venue,comp:f.comp,format:L.format||N(),gf:sc.f,ga:sc.a,duration:L.acc,cap:L.cap||null,
         events:L.events.slice().sort((a,b)=>a.min-b.min).map(e=>e.t==='for'?{t:'for',min:e.min,scorer:e.scorer==='og'?{id:'og',name:'Own goal'}:snapP(e.scorer),assist:e.assist?snapP(e.assist):null,pen:!!e.pen}:{t:'against',min:e.min}),
-        played:L.played.map(snapP).filter(Boolean),lineup:L.lineup,potm:L.potm?snapP(L.potm):null};
+        played:L.played.map(snapP).filter(Boolean),lineup:L.lineup,potm:L.potm?snapP(L.potm):null,gk:L.gk?snapP(L.gk):null};
       $('fsave').disabled=true;
       try{
         if(db)await db.collection('matches').doc(m.id).set(m);
@@ -638,28 +650,31 @@ function finishModal(){
 /* ---------- stats ---------- */
 function renderStats(){
   const el=$('stats');
-  const addBtn=`<div class="bar" style="justify-content:flex-end;margin-bottom:14px">${M.length?'<button class="btn" type="button" data-exp="results">Export results</button><button class="btn" type="button" data-exp="players">Export player stats</button>':''}<button class="btn go" type="button" data-addm>Add a past result</button></div>`;
+  const addBtn=`<div class="bar" style="justify-content:flex-end;margin-bottom:14px">${M.length?'<button class="btn white" type="button" data-statimg>Share stats image</button><button class="btn" type="button" data-exp="results">Export results</button><button class="btn" type="button" data-exp="players">Export player stats</button>':''}<button class="btn go" type="button" data-addm>Add a past result</button></div>`;
   if(!M.length){el.innerHTML=addBtn+'<div class="card"><h2>No matches yet</h2><p class="empty">Start a game on the Match tab and press Full time to save it here, or add results you have already played. Results, scorers, assists and appearances build up as the season goes on.</p></div>';return}
-  const {t,pl}=computeStats();
+  const {t,pl,gks}=computeStats();
   const rows=Object.values(pl).sort((a,b)=>b[sortK]-a[sortK]||b.g-a.g||b.a-a.a||a.name.localeCompare(b.name));
   const gd=t.gf-t.ga,res=m=>m.gf>m.ga?'W':m.gf<m.ga?'L':'D';
   const top=rows.slice().sort((a,b)=>b.g-a.g)[0];
   const th=(k,l)=>`<th><button type="button" data-sort="${k}" class="${sortK===k?'on':''}">${l}</button></th>`;
-  return renderStatsHTML(el,addBtn,t,rows,gd,res,top,th);
+  return renderStatsHTML(el,addBtn,t,rows,gd,res,top,th,gks);
 }
 function computeStats(){
-  const t={w:0,d:0,l:0,gf:0,ga:0,cs:0},pl={};
+  const t={w:0,d:0,l:0,gf:0,ga:0,cs:0},pl={},gks={};
   const P=o=>{if(!o||!o.id||o.id==='og')return null;return pl[o.id]=pl[o.id]||{id:o.id,name:o.name,num:o.num,apps:0,st:0,g:0,a:0,potm:0}};
   M.forEach(m=>{
     t.gf+=m.gf;t.ga+=m.ga;if(m.ga===0)t.cs++;m.gf>m.ga?t.w++:m.gf<m.ga?t.l++:t.d++;
     (m.played||[]).forEach(p=>{const r=P(p);if(r){r.apps++;if((m.lineup||[]).includes(p.id))r.st++}});
     (m.events||[]).forEach(e=>{if(e.t!=='for')return;const s=P(e.scorer);if(s)s.g++;const a=P(e.assist);if(a)a.a++});
     const pm=P(m.potm);if(pm)pm.potm++;
+    if(m.gk&&m.gk.id){const k=gks[m.gk.id]=gks[m.gk.id]||{id:m.gk.id,name:m.gk.name,games:0,cs:0,ga:0,w:0,d:0,l:0};k.games++;k.ga+=m.ga;if(m.ga===0)k.cs++;m.gf>m.ga?k.w++:m.gf<m.ga?k.l++:k.d++}
   });
+  Object.values(gks).forEach(k=>{const p=byId(k.id);if(p)k.name=p.name;if(pl[k.id]){pl[k.id].gkg=k.games;pl[k.id].gkcs=k.cs;pl[k.id].gkga=k.ga}});
   Object.values(pl).forEach(r=>{const p=byId(r.id);if(p){r.name=p.name;r.num=p.num}r.ga=r.g+r.a});
-  return{t,pl};
+  return{t,pl,gks};
 }
-function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th){
+function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th,gks){
+  const keepers=Object.values(gks).sort((a,b)=>b.games-a.games);
   el.innerHTML=addBtn+`
   <div class="tiles">
     <div class="tile"><b>${M.length}</b><span>Played</span></div>
@@ -672,6 +687,10 @@ function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th){
     <div class="tile"><b>${t.cs}</b><span>Clean sheets</span></div>
   </div>
   <div class="form">Last 5 (newest first): ${M.slice(0,5).map(m=>`<span class="pill ${res(m)}">${res(m)}</span>`).join('')}<span style="margin-left:auto">Win rate <b style="color:#fff">${Math.round(t.w/M.length*100)}%</b>${top&&top.g?` · Top scorer <b style="color:#fff">${esc(top.name)} (${top.g})</b>`:''}${(()=>{const t3=rows.slice().sort((a,b)=>b.ga-a.ga)[0];return t3&&t3.ga?` · Most goal involvements <b style="color:#fff">${esc(t3.name)} (${t3.ga})</b>`:''})()}${(()=>{const t2=rows.slice().sort((a,b)=>b.potm-a.potm)[0];return t2&&t2.potm?` · Most POTM <b style="color:#fff">${esc(t2.name)} (${t2.potm})</b>`:''})()}</span></div>
+  ${keepers.length?`<h2 class="sec">Goalkeeper</h2>${keepers.map(k=>`<div class="card gkcard"><div class="gkname">${ICON.gk}<span>${esc(k.name)}</span></div><div class="tiles">
+    <div class="tile"><b>${k.games}</b><span>Games in goal</span></div><div class="tile hi"><b>${k.cs}</b><span>Clean sheets</span></div>
+    <div class="tile"><b>${k.ga}</b><span>Goals conceded</span></div><div class="tile"><b>${(k.ga/k.games).toFixed(1)}</b><span>Conceded per game</span></div></div>
+    <p class="note">In goal: ${k.w} won, ${k.d} drawn, ${k.l} lost</p></div>`).join('')}`:''}
   <h2 class="sec">Player stats</h2>
   <div class="card scroll" style="padding:6px 12px"><table><thead><tr><th>#</th><th>Player</th>${th('apps','Apps')}${th('st','Starts')}${th('g','Gls')}${th('a','Ast')}${th('ga','GI')}${th('potm','POTM')}</tr></thead>
   <tbody>${rows.map((r,i)=>`<tr class="${i===0?'lead':''}"><td class="n">${esc(r.num)}</td><td>${esc(r.name)}</td><td>${r.apps}</td><td>${r.st}</td><td>${r.g}</td><td>${r.a}</td><td>${r.ga}</td><td>${r.potm}</td></tr>`).join('')}</tbody></table></div>
@@ -684,6 +703,7 @@ function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th){
       ${goals.length?`<p><b>Our goals</b></p><ul>${goals.map(e=>`<li>${e.min!=null?e.min+"' ":''}${esc(e.scorer?e.scorer.name:'Scorer unknown')}${e.pen?` <span style="color:var(--mut)">(pen)</span>`:e.assist?` <span style="color:var(--mut)">(assist ${esc(e.assist.name)})</span>`:''}</li>`).join('')}</ul>`:''}
       ${opp.some(e=>e.min!=null)?`<p><b>${esc(m.opp)} goals</b> ${opp.filter(e=>e.min!=null).map(e=>e.min+"'").join(', ')}</p>`:''}
       ${m.potm?`<p><b>Player of the match</b> ${esc(m.potm.name)}</p>`:''}
+      ${m.gk?`<p><b>In goal</b> ${esc(m.gk.name)}${m.ga===0?' · clean sheet':''}</p>`:''}
       ${(()=>{const lu=m.lineup||[],st=(m.played||[]).filter(p=>lu.includes(p.id)),sb=(m.played||[]).filter(p=>!lu.includes(p.id)),nm=p=>esc(p.name)+(m.cap===p.id?' (C)':'');
         return st.length?`<p><b>Started</b> ${st.map(nm).join(', ')}</p>${sb.length?`<p><b>Subs used</b> ${sb.map(nm).join(', ')}</p>`:''}`:`<p><b>Played</b> ${(m.played||[]).map(nm).join(', ')||'—'}</p>`})()}
       <div class="bar" style="margin-top:6px"><button class="btn go" type="button" data-sharem="${esc(m.id)}">Share summary</button><button class="btn" type="button" data-editm="${esc(m.id)}">Edit</button><button class="btn" type="button" data-delm="${esc(m.id)}">Delete match</button></div>
@@ -693,6 +713,7 @@ $('stats').addEventListener('click',async e=>{
   const s=e.target.closest('[data-sort]');if(s){sortK=s.dataset.sort;return renderStats()}
   if(e.target.closest('[data-addm]'))return matchForm(null);
   const ex=e.target.closest('[data-exp]');if(ex)return exportCSV(ex.dataset.exp);
+  if(e.target.closest('[data-statimg]'))return shareImage('Season stats',drawStats,statsText(),slug(S.team+' season stats '+new Date().toISOString().slice(0,10))+'.png');
   const sh=e.target.closest('[data-sharem]');if(sh){const m=M.find(x=>x.id===sh.dataset.sharem);return m&&shareSummary(m)}
   const ed=e.target.closest('[data-editm]');if(ed){const m=M.find(x=>x.id===ed.dataset.editm);return m&&matchForm(m)}
   const b=e.target.closest('[data-delm]');if(!b)return;
@@ -852,8 +873,8 @@ function exportCSV(kind){
     name='results';
   }else{
     const {t,pl}=computeStats();
-    rows=[['Number','Player','Appearances','Starts','Goals','Assists','Goal involvements','Player of the match','Goals per game']];
-    Object.values(pl).sort((a,b)=>b.ga-a.ga||b.g-a.g||a.name.localeCompare(b.name)).forEach(r=>rows.push([r.num,r.name,r.apps,r.st,r.g,r.a,r.ga,r.potm,r.apps?(r.g/r.apps).toFixed(2):'0.00']));
+    rows=[['Number','Player','Appearances','Starts','Goals','Assists','Goal involvements','Player of the match','Goals per game','Games in goal','Clean sheets','Goals conceded in goal']];
+    Object.values(pl).sort((a,b)=>b.ga-a.ga||b.g-a.g||a.name.localeCompare(b.name)).forEach(r=>rows.push([r.num,r.name,r.apps,r.st,r.g,r.a,r.ga,r.potm,r.apps?(r.g/r.apps).toFixed(2):'0.00',r.gkg||'',r.gkcs??'',r.gkga??'']));
     rows.push([],['Team','Played','Won','Drawn','Lost','Goals for','Goals against','Goal difference','Clean sheets'],[S.team,M.length,t.w,t.d,t.l,t.gf,t.ga,t.gf-t.ga,t.cs]);
     name='player-stats';
   }
@@ -901,6 +922,7 @@ function summaryText(m){
   if(P.goals.length){L.push('');P.goals.forEach(e=>L.push(`⚽ ${e.min!=null?e.min+"' ":''}${e.scorer?e.scorer.name:'Scorer unknown'}${e.pen?' (pen)':e.assist?` (assist ${e.assist.name})`:''}`))}
   const om=P.opp.filter(e=>e.min!=null).map(e=>e.min+"'");if(om.length)L.push(`${m.opp}: ${om.join(', ')}`);
   if(m.potm)L.push('',`⭐ Player of the match: *${m.potm.name}*`);
+  if(m.gk&&m.ga===0)L.push(`🧤 Clean sheet: ${m.gk.name}`);
   if(P.st.length)L.push('',`Started: ${P.st.map(p=>p.name).join(', ')}`);
   if(P.sb.length)L.push(`Subs: ${P.sb.map(p=>p.name).join(', ')}`);
   return L.join('\n');
@@ -969,6 +991,58 @@ async function drawSummary(m){
   x.fillStyle='rgba(255,255,255,.5)';F('600',22);x.fillText(S.sub.toUpperCase(),40,H-22);
   return c;
 }
+function statsText(){
+  const {t,pl,gks}=computeStats(),rows=Object.values(pl).sort((a,b)=>b.ga-a.ga||b.g-a.g||a.name.localeCompare(b.name)),gd=t.gf-t.ga;
+  const L=[`*${S.team.toUpperCase()} – SEASON STATS*`,`P${M.length} W${t.w} D${t.d} L${t.l} · GF ${t.gf} GA ${t.ga} · GD ${gd>0?'+':''}${gd} · Clean sheets ${t.cs}`];
+  Object.values(gks).forEach(k=>L.push(`🧤 ${k.name}: ${k.cs} clean sheets in ${k.games} games, ${k.ga} conceded`));
+  L.push('','*Players* (goals / assists / GI / POTM)');
+  rows.forEach(r=>L.push(`${r.name}: ${r.g} / ${r.a} / ${r.ga}${r.potm?' / '+r.potm:''}`));
+  return L.join('\n');
+}
+async function drawStats(){
+  try{await Promise.all(['italic 800 60px','800 40px','600 30px'].map(f=>document.fonts.load(f+' "Barlow Condensed"')))}catch(e){}
+  const {t,pl,gks}=computeStats(),rows=Object.values(pl).sort((a,b)=>b.ga-a.ga||b.g-a.g||b.potm-a.potm||a.name.localeCompare(b.name)).slice(0,18),keepers=Object.values(gks).sort((a,b)=>b.games-a.games).slice(0,2);
+  const rh=50,W=1080,top=560+(keepers.length?keepers.length*130+20:0),H=Math.max(1350,top+64+rows.length*rh+90);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),F=(w,z)=>x.font=`${w} ${z}px "Barlow Condensed", sans-serif`;
+  let g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#2a0607');g.addColorStop(.5,'#0b0b0c');g.addColorStop(1,'#050505');x.fillStyle=g;x.fillRect(0,0,W,H);
+  g=x.createRadialGradient(W*.85,60,0,W*.85,60,760);g.addColorStop(0,'rgba(211,17,24,.55)');g.addColorStop(1,'rgba(211,17,24,0)');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.save();x.globalAlpha=.035;x.fillStyle='#fff';for(let i=-H;i<W;i+=92){x.beginPath();x.moveTo(i,H);x.lineTo(i+46,H);x.lineTo(i+46+H*.47,0);x.lineTo(i+H*.47,0);x.fill()}x.restore();
+  const img=await loadImg(crestSrc());
+  x.save();x.beginPath();x.arc(115,115,80,0,7);x.fillStyle='#fff';x.fill();x.clip();if(img)x.drawImage(img,37,37,156,156);x.restore();
+  x.fillStyle='#fff';fitFont(x,S.team.toUpperCase(),W-270,'italic 800',76,40);x.fillText(S.team.toUpperCase(),228,100);
+  const ds=M.map(m=>m.date).filter(Boolean).sort();x.fillStyle='#d6d0d0';F('600',32);
+  x.fillText(`SEASON SO FAR · ${M.length} GAMES${ds.length?' · '+fmtDate(ds[0],{day:'numeric',month:'short'}).toUpperCase()+' – '+fmtDate(ds[ds.length-1],{day:'numeric',month:'short'}).toUpperCase():''}`,228,150);
+  const by=236;x.fillStyle='#D31118';x.beginPath();x.moveTo(40,by);x.lineTo(380,by);x.lineTo(356,by+56);x.lineTo(40,by+56);x.fill();
+  x.fillStyle='#fff';x.beginPath();x.moveTo(392,by);x.lineTo(406,by);x.lineTo(382,by+56);x.lineTo(368,by+56);x.fill();
+  F('italic 800',38);x.fillText('SEASON STATS',60,by+41);
+  // tiles
+  const gd=t.gf-t.ga,tiles=[['P',M.length],['W',t.w],['D',t.d],['L',t.l],['GF',t.gf],['GA',t.ga],['GD',(gd>0?'+':'')+gd],['CS',t.cs]];
+  const tw=(W-80-7*10)/8;tiles.forEach(([l,v],i)=>{const tx=40+i*(tw+10),ty=320;x.fillStyle=i===1?'#D31118':'rgba(255,255,255,.08)';x.fillRect(tx,ty,tw,120);
+    x.fillStyle='#fff';x.textAlign='center';F('800',54);x.fillText(String(v),tx+tw/2,ty+66);x.fillStyle=i===1?'#fff':'#bdb5b5';F('800',24);x.fillText(l,tx+tw/2,ty+102);x.textAlign='left'});
+  // form
+  const res=m=>m.gf>m.ga?'W':m.gf<m.ga?'L':'D';x.fillStyle='#bdb5b5';F('600',28);x.fillText('FORM',40,500);
+  M.slice(0,5).reverse().forEach((m,i)=>{const r=res(m),fx=140+i*58;x.fillStyle=r==='W'?'#22b35e':r==='D'?'#8a8a8a':'#000';x.fillRect(fx,472,48,40);if(r==='L'){x.strokeStyle='#D31118';x.lineWidth=3;x.strokeRect(fx+1.5,473.5,45,37)}
+    x.fillStyle='#fff';x.textAlign='center';F('800',28);x.fillText(r,fx+24,502);x.textAlign='left'});
+  x.fillStyle='#bdb5b5';F('600',28);x.textAlign='right';x.fillText(`WIN RATE ${M.length?Math.round(t.w/M.length*100):0}%`,W-40,500);x.textAlign='left';
+  // keepers
+  let y=550;
+  keepers.forEach(k=>{
+    x.fillStyle='rgba(0,0,0,.55)';x.fillRect(40,y,W-80,112);x.fillStyle='#ffd84d';x.fillRect(40,y,10,112);
+    x.fillStyle='#ffd84d';F('italic 800',26);x.fillText('GOALKEEPER',72,y+38);x.fillStyle='#fff';fitFont(x,k.name.toUpperCase(),300,'800',52,30);x.fillText(k.name.toUpperCase(),72,y+90);
+    [['GAMES',k.games],['CLEAN SHEETS',k.cs],['CONCEDED',k.ga],['PER GAME',(k.ga/k.games).toFixed(1)]].forEach(([l,v],i)=>{const kx=420+i*150;x.textAlign='center';x.fillStyle=i===1?'#ffd84d':'#fff';F('800',50);x.fillText(String(v),kx+65,y+64);x.fillStyle='#bdb5b5';F('800',20);x.fillText(l,kx+65,y+94);x.textAlign='left'});
+    y+=130;
+  });
+  // table
+  y+=10;const cols=[['APPS','apps'],['STARTS','st'],['GLS','g'],['AST','a'],['GI','ga'],['POTM','potm']],cx0=520,cw=(W-40-cx0)/cols.length;
+  x.fillStyle='#D31118';F('italic 800',30);x.fillText('PLAYERS',40,y+34);
+  x.fillStyle='#bdb5b5';F('800',22);x.textAlign='center';cols.forEach(([l],i)=>x.fillText(l,cx0+i*cw+cw/2,y+34));x.textAlign='left';y+=52;
+  rows.forEach((r,i)=>{x.fillStyle=i%2?'rgba(255,255,255,.04)':'rgba(255,255,255,.09)';x.fillRect(40,y,W-80,rh-4);
+    x.fillStyle='#fff';F('800',30);x.fillText(clipText(x,r.name.toUpperCase(),cx0-80),60,y+34);
+    cols.forEach(([,k],j)=>{x.textAlign='center';x.fillStyle=k==='ga'?'#fff':'#e4dede';F(k==='ga'?'800':'600',30);x.fillText(String(r[k]),cx0+j*cw+cw/2,y+34);x.textAlign='left'});
+    y+=rh;});
+  x.fillStyle='rgba(255,255,255,.5)';F('600',22);x.fillText('GI = GOALS + ASSISTS  ·  CS = CLEAN SHEETS  ·  '+S.sub.toUpperCase(),40,H-26);
+  return c;
+}
 function shareSummary(m){shareImage('Match summary',()=>drawSummary(m),summaryText(m),slug(S.team+' v '+m.opp+' '+(m.date||''))+'.png')}
 $('share').onclick=shareSheet;
 
@@ -1029,7 +1103,8 @@ function matchForm(orig){
     <p class="lab">Our goals <span style="color:var(--mut)">(scorer, assist, minute if you know it)</span></p><div id="r-goals"></div>
     <p class="lab">Who played <span style="color:var(--mut)">— tap once for started, twice for came on as a sub, again to clear</span> <button type="button" class="btn" id="r-all" style="min-height:32px;font-size:14px;margin-left:8px">All started</button></p>
     <div class="pick" id="r-played">${people.map(p=>`<button type="button" data-id="${esc(p.id)}" class="${role[p.id]==='start'?'on':role[p.id]==='sub'?'subon':''}">${esc(p.num)} ${esc(p.name)}<span>${chipTxt(p.id)}</span></button>`).join('')}</div>
-    <label class="f" style="margin-top:14px">Player of the match<select id="r-potm">${opts(m.potm?m.potm.id:'','None chosen')}</select></label>
+    <div class="grid2" style="margin-top:14px"><label class="f">Goalkeeper<select id="r-gk">${opts(m.gk?m.gk.id:orig?'':(S.players.find(p=>p.gk)||{}).id||'','Not recorded')}</select></label>
+    <label class="f">Player of the match<select id="r-potm">${opts(m.potm?m.potm.id:'','None chosen')}</select></label></div>
     <div class="bar">${orig?'<button class="btn" id="r-del" style="margin-right:auto">Delete match</button>':''}<button class="btn" data-close>Cancel</button><button class="btn go" id="r-save">Save result</button></div>`,()=>{
     if(orig)$('r-del').onclick=async()=>{const b=$('r-del');if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Tap again to delete';b.classList.add('go');return}
       try{if(db)await db.doc('matches/'+m.id).delete();else{M=M.filter(x=>x.id!==m.id);saveM();renderStats()}closeModal();toast('Match deleted')}catch(err){toast('Could not delete — try again')}};
@@ -1051,10 +1126,11 @@ function matchForm(orig){
       const sn=id=>id&&known[id]?{...known[id]}:null,num=v=>{const n=parseInt(v);return isNaN(n)?null:n};
       goals.forEach(g=>{if(g.s&&g.s!=='og'&&!role[g.s])role[g.s]='start';if(g.a&&g.a!=='pen'&&!role[g.a])role[g.a]='start'});
       const potm=$('r-potm').value;if(potm&&!role[potm])role[potm]='start';
+      const gk=$('r-gk').value;if(gk&&!role[gk])role[gk]='start';
       const ev=goals.slice(0,gf).map(g=>({t:'for',min:num(g.min),scorer:g.s==='og'?{id:'og',name:'Own goal'}:sn(g.s),assist:g.a&&g.a!==g.s&&g.a!=='pen'?sn(g.a):null,pen:g.a==='pen'}))
         .concat(Array.from({length:ga},(_,i)=>({t:'against',min:oppMins[i]??null})))
         .sort((a,b)=>(a.min??999)-(b.min??999));
-      Object.assign(m,{date:$('r-date').value,opp:$('r-opp').value.trim()||'Opposition',ha:$('r-ha').value,format:+$('r-fmt').value,comp:$('r-comp').value.trim(),gf,ga,events:ev,played:Object.keys(role).map(sn).filter(Boolean),lineup:Object.keys(role).filter(id=>role[id]==='start'),potm:sn(potm),finishedAt:m.finishedAt||Date.now(),manual:orig?m.manual:true});
+      Object.assign(m,{date:$('r-date').value,opp:$('r-opp').value.trim()||'Opposition',ha:$('r-ha').value,format:+$('r-fmt').value,comp:$('r-comp').value.trim(),gf,ga,events:ev,played:Object.keys(role).map(sn).filter(Boolean),lineup:Object.keys(role).filter(id=>role[id]==='start'),potm:sn(potm),gk:sn(gk),finishedAt:m.finishedAt||Date.now(),manual:orig?m.manual:true});
       $('r-save').disabled=true;
       try{
         if(db)await db.collection('matches').doc(m.id).set(clone(m));
