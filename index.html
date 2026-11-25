@@ -80,7 +80,17 @@ details[open]>summary{margin-bottom:12px}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 label.f{display:grid;gap:4px;font-size:14px;color:var(--mut)}
 input[type=text],input[type=date],input[type=time],select{min-height:44px;font-size:16px;padding:0 10px;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.35);width:100%}
-.row{display:grid;grid-template-columns:56px minmax(0,1fr) auto 44px;gap:8px;align-items:center;margin-bottom:8px}
+.row{display:grid;grid-template-columns:56px minmax(0,1fr) 44px;gap:8px;align-items:center;margin-bottom:8px}
+#squad .row{padding-bottom:10px;border-bottom:1px solid var(--line)}
+.tags{grid-column:2/4;display:flex;gap:6px;flex-wrap:wrap}
+.tag{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:14px;color:var(--mut);cursor:pointer}
+.tag.on{color:#fff;border-color:#fff;background:rgba(255,255,255,.12)}
+.tag input{position:absolute;opacity:0;pointer-events:none}
+.ico{width:20px;height:20px;flex:none}
+.chip.out{opacity:.6;cursor:default;touch-action:auto}
+.chip.out .n{background:#3a3a3a}
+.outh{margin:14px 0 8px;font:800 16px 'Barlow Condensed',sans-serif;text-transform:uppercase;color:var(--mut);display:flex;justify-content:space-between;align-items:center}
+.outh button{background:none;border:0;color:var(--mut);text-decoration:underline;font:600 14px Barlow,sans-serif;min-height:32px}
 .row .num{text-align:center;font-weight:600}
 .capl{display:flex;align-items:center;gap:4px;font-size:14px;color:var(--mut);min-height:44px;padding:0 4px;cursor:pointer}
 .capl input{accent-color:var(--red);width:18px;height:18px}
@@ -311,6 +321,11 @@ const TW={7:'22%',9:'19%',11:'16%'};
 const XS={1:[50],2:[30,70],3:[18,50,82],4:[12,37,63,88],5:[10,30,50,70,90]};
 const SAMPLE=[];
 const $=id=>document.getElementById(id);
+const PLANE='M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z';
+const ICON={
+  inj:'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(-45 12 12)"><rect x="1.5" y="7.5" width="21" height="9" rx="4.5" fill="#f3c9a0" stroke="#6b4426" stroke-width="1.2"/><rect x="8.5" y="7.5" width="7" height="9" fill="#fff4e6" stroke="#6b4426" stroke-width="1.2"/><circle cx="4.6" cy="10.6" r=".8" fill="#6b4426"/><circle cx="4.6" cy="13.4" r=".8" fill="#6b4426"/><circle cx="19.4" cy="10.6" r=".8" fill="#6b4426"/><circle cx="19.4" cy="13.4" r=".8" fill="#6b4426"/></g></svg>',
+  away:`<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="${PLANE}" fill="#9fd3ff" transform="rotate(45 12 12)"/></svg>`};
+const ST={inj:'Injured',away:'Away'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const dist=(a,b)=>Math.hypot((a.x-b.x)*.64,a.y-b.y);
 const surname=n=>{const w=String(n).trim().split(/\s+/);return w[w.length-1]||'?'};
@@ -371,7 +386,7 @@ function applyForm(f,fill){
   S.form=f;
   const sl=slots(f).sort((a,b)=>b.y-a.y||a.x-b.x);
   let ids=onPitch().sort((a,b)=>S.pos[b].y-S.pos[a].y||S.pos[a].x-S.pos[b].x);
-  if(fill)ids=ids.concat(S.players.filter(p=>!S.pos[p.id]).sort(byNum).map(p=>p.id));
+  if(fill)ids=ids.concat(S.players.filter(p=>!S.pos[p.id]&&!p.st).sort(byNum).map(p=>p.id));
   S.pos={};ids.slice(0,sl.length).forEach((id,i)=>S.pos[id]={...sl[i]});
 }
 function roles(){
@@ -396,16 +411,18 @@ function renderLineup(){
   pitch.innerHTML=PITCH+freeSlots().map(s=>`<i class="slot" style="left:${s.x}%;top:${s.y}%"></i>`).join('')+R.list.map((id,i)=>tok(id,R,i)).join('');
   $('forms').innerHTML=FORMS[N()].map(f=>`<button type="button" data-f="${f}" class="${S.form===f?'on':''}">${f}</button>`).join('');
   $('live').innerHTML=`On the pitch: <b>${ids.length}/${N()}</b> · shape <b>${esc(R.label)}</b>`;
-  const subs=S.players.filter(p=>!S.pos[p.id]).sort(byNum);
+  const subs=S.players.filter(p=>!S.pos[p.id]&&!p.st).sort(byNum);
   $('subn').textContent=subs.length+(subs.length===1?' player':' players');
-  $('subs').innerHTML=subs.length?subs.map(p=>`<button type="button" class="chip${sel===p.id?' sel':''}" data-pid="${p.id}" data-src="bench"><span class="n">${esc(p.num)}</span>${esc(p.name)}</button>`).join(''):'<p class="empty">Nobody on the bench.</p>';
+  const out=S.players.filter(p=>p.st).sort(byNum);
+  $('subs').innerHTML=(subs.length?subs.map(p=>`<button type="button" class="chip${sel===p.id?' sel':''}" data-pid="${p.id}" data-src="bench"><span class="n">${esc(p.num)}</span>${esc(p.name)}</button>`).join(''):'<p class="empty">Nobody on the bench.</p>')
+    +(out.length?`<div style="flex-basis:100%"><p class="outh">Unavailable this week <button type="button" id="clearout">Clear all</button></p><div style="display:flex;flex-wrap:wrap;gap:8px">${out.map(p=>`<span class="chip out" title="${ST[p.st]}"><span class="n">${esc(p.num)}</span>${esc(p.name)}${ICON[p.st]}</span>`).join('')}</div></div>`:'');
   $('undo').disabled=!hist.length;
   $('samplenote').hidden=!S.sample;
   const f=S.fix;$('fixsum').textContent=f.opp?'v '+f.opp:'Not set';
 }
 function renderSquad(){
   $('sqn').textContent=`${S.players.length} players`;
-  $('squad').innerHTML=S.players.slice().sort(byNum).map(p=>`<div class="row" data-id="${p.id}"><input type="text" class="num" inputmode="numeric" maxlength="2" value="${esc(p.num)}" aria-label="Shirt number"><input type="text" class="nm" value="${esc(p.name)}" aria-label="Player name"><label class="capl"><input type="radio" name="cap" ${S.cap===p.id?'checked':''}>C</label><button type="button" class="x" aria-label="Remove ${esc(p.name)}">×</button></div>`).join('');
+  $('squad').innerHTML=S.players.slice().sort(byNum).map(p=>`<div class="row" data-id="${p.id}"><input type="text" class="num" inputmode="numeric" maxlength="2" value="${esc(p.num)}" aria-label="Shirt number"><input type="text" class="nm" value="${esc(p.name)}" aria-label="Player name"><button type="button" class="x" aria-label="Remove ${esc(p.name)}">×</button><div class="tags"><label class="tag${S.cap===p.id?' on':''}"><input type="radio" name="cap" ${S.cap===p.id?'checked':''}>Captain</label><button type="button" class="tag${p.st==='inj'?' on':''}" data-st="inj" aria-pressed="${p.st==='inj'}">${ICON.inj}Injured</button><button type="button" class="tag${p.st==='away'?' on':''}" data-st="away" aria-pressed="${p.st==='away'}">${ICON.away}Away</button></div></div>`).join('');
   $('addf').querySelector('button').disabled=S.players.length>=MAX;
 }
 function fillFix(){for(const k in S.fix){const el=$('f-'+k);if(el)el.value=S.fix[k]||''}}
@@ -475,6 +492,7 @@ window.addEventListener('pointercancel',()=>{if(drag){ghost.style.display='none'
 $('fmt').addEventListener('click',e=>{const b=e.target.closest('[data-fmt]');if(!b||+b.dataset.fmt===N())return;commit();S.format=+b.dataset.fmt;applyForm(FORMS[N()][0],true);done()});
 $('forms').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;commit();applyForm(b.dataset.f,true);done()});
 $('undo').onclick=()=>{if(!hist.length)return;const live=S.live;S=normalize(JSON.parse(hist.pop()));S.live=live;sel=null;save();renderAll();renderSquad();fillFix()};
+$('subs').addEventListener('click',e=>{if(e.target.id!=='clearout')return;commit();S.players.forEach(p=>delete p.st);save();renderAll();renderSquad();toast('Everyone is available again')});
 $('clear').onclick=()=>{if(!onPitch().length)return;commit();S.pos={};done();toast('Pitch cleared — Undo brings them back')};
 let fixT;
 function homeFill(){
@@ -490,9 +508,11 @@ $('squad').addEventListener('change',e=>{
   if(e.target.classList.contains('num'))p.num=e.target.value.replace(/\D/g,'').slice(0,2)||'?';
   else if(e.target.classList.contains('nm'))p.name=e.target.value.trim()||'Player';
   else if(e.target.type==='radio')S.cap=p.id;
-  save();renderAll();
+  save();renderAll();if(e.target.type==='radio')renderSquad();
 });
 $('squad').addEventListener('click',e=>{
+  const t=e.target.closest('[data-st]');
+  if(t){const p=byId(t.closest('.row').dataset.id),v=t.dataset.st;commit();p.st=p.st===v?undefined:v;if(!p.st)delete p.st;else{delete S.pos[p.id];if(S.cap===p.id)toast(p.name+' is captain — pick another for this week')}if(sel===p.id)sel=null;save();renderAll();renderSquad();return}
   const b=e.target.closest('.x');if(!b)return;const id=b.closest('.row').dataset.id;
   commit();S.players=S.players.filter(p=>p.id!==id);delete S.pos[id];if(S.cap===id)S.cap=null;done();renderSquad();
 });
@@ -561,7 +581,7 @@ $('g-them').onclick=()=>{if(!S.live)return;const min=curMin();S.live.events.push
 $('g-us').onclick=()=>{
   if(!S.live)return;
   let sc=null,as=null;
-  const on=onPitch(),rest=S.players.filter(p=>!on.includes(p.id)).sort(byNum).map(p=>p.id);
+  const on=onPitch(),rest=S.players.filter(p=>!on.includes(p.id)&&!p.st).sort(byNum).map(p=>p.id);
   const ordered=roles().list.slice().reverse().concat(rest);
   const btns=(kind,ids)=>ids.map(id=>`<button type="button" data-k="${kind}" data-id="${id}" class="${on.includes(id)?'':'off'}">${esc(byId(id).num)} ${esc(byId(id).name)}</button>`).join('');
   modal(`<h3>Jackals goal!</h3><label class="f" style="max-width:120px">Minute<input type="text" id="gmin" inputmode="numeric" value="${curMin()}"></label>
@@ -584,7 +604,7 @@ $('g-us').onclick=()=>{
 function finishModal(){
   const L=S.live,sc=score(L.events);
   let potm=L.potm||null;
-  const ids=L.played.filter(byId).concat(S.players.map(p=>p.id).filter(id=>!L.played.includes(id)));
+  const ids=L.played.filter(byId).concat(S.players.filter(p=>!p.st).map(p=>p.id).filter(id=>!L.played.includes(id)));
   modal(`<h3>Full time</h3><p style="font:800 30px 'Barlow Condensed';text-transform:uppercase;margin:0 0 6px">${esc(S.short)} ${sc.f}–${sc.a} ${esc(oppName())}</p>
     <p class="lab">Step 1 — choose player of the match</p>
     <div class="pick" id="fpotm">${ids.map(id=>`<button type="button" data-id="${id}" class="${potm===id?'on':''} ${L.played.includes(id)?'':'off'}">${esc(byId(id).num)} ${esc(byId(id).name)}</button>`).join('')}</div>
@@ -680,7 +700,7 @@ function openBC(){
   const R=roles();
   if(!R.list.length)return toast('Put some players on the pitch first');
   bcOpen=true;sel=null;
-  const subs=S.players.filter(p=>!S.pos[p.id]).sort(byNum),f=S.fix;
+  const subs=S.players.filter(p=>!S.pos[p.id]&&!p.st).sort(byNum),f=S.fix;
   const fix=[S.fix.opp?`v <b>${esc(f.opp)}</b>`:'',esc(fmtDate(f.date)),f.ko?'KO '+esc(f.ko):'',esc(f.ha),esc(f.venue),esc(f.comp)].filter(Boolean).join(' · ');
   bc.innerHTML=`<div class="bcin">
     <header class="bchead"><img class="crest" src="${crestSrc()}" alt="Club crest">
@@ -704,7 +724,7 @@ document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$('modal'
 
 /* ---------- team sheet: text + image ---------- */
 function teamText(){
-  const R=roles(),f=S.fix,subs=S.players.filter(p=>!S.pos[p.id]).sort(byNum);
+  const R=roles(),f=S.fix,subs=S.players.filter(p=>!S.pos[p.id]&&!p.st).sort(byNum);
   const lines=[`*${S.team.toUpperCase()}* v *${oppName()}*`];
   const when=[fmtDate(f.date,{weekday:'long',day:'numeric',month:'long'}),f.ko?'KO '+f.ko:''].filter(Boolean).join(' · ');
   if(when)lines.push('📅 '+when);
@@ -715,6 +735,8 @@ function teamText(){
   lines.push('',`*Starting ${N()}* (${R.label})`);
   R.list.forEach(id=>{const p=byId(id);lines.push(`${p.num}. ${p.name}${S.cap===id?' (C)':''} – ${R.r[id]}`)});
   if(subs.length){lines.push('','*Subs*');subs.forEach(p=>lines.push(`${p.num}. ${p.name}`))}
+  const out=S.players.filter(p=>p.st).sort(byNum);
+  if(out.length){lines.push('','*Unavailable*');out.forEach(p=>lines.push(`${p.st==='inj'?'🩹':'✈️'} ${p.name} – ${ST[p.st].toLowerCase()}`))}
   return lines.join('\n');
 }
 function loadImg(src){return new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src})}
@@ -723,7 +745,7 @@ function clipText(x,t,max){if(x.measureText(t).width<=max)return t;while(t.lengt
 async function drawSheet(){
   try{await Promise.all(['italic 800 60px','800 40px','600 30px'].map(f=>document.fonts.load(f+' "Barlow Condensed"')))}catch(e){}
   const W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
-  const R=roles(),f=S.fix,subs=S.players.filter(p=>!S.pos[p.id]).sort(byNum);
+  const R=roles(),f=S.fix,subs=S.players.filter(p=>!S.pos[p.id]&&!p.st).sort(byNum);
   let g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#2a0607');g.addColorStop(.55,'#0b0b0c');g.addColorStop(1,'#050505');x.fillStyle=g;x.fillRect(0,0,W,H);
   g=x.createRadialGradient(W*.85,60,0,W*.85,60,760);g.addColorStop(0,'rgba(211,17,24,.6)');g.addColorStop(1,'rgba(211,17,24,0)');x.fillStyle=g;x.fillRect(0,0,W,H);
   x.save();x.globalAlpha=.035;x.fillStyle='#fff';for(let i=-H;i<W;i+=92){x.beginPath();x.moveTo(i,H);x.lineTo(i+46,H);x.lineTo(i+46+H*.47,0);x.lineTo(i+H*.47,0);x.fill()}x.restore();
@@ -775,13 +797,24 @@ async function drawSheet(){
   };
   const rh=R.list.length>9?44:52;
   R.list.forEach(id=>{const p=byId(id);row(p.num,p.name+(S.cap===id?' (C)':''),R.r[id],rh,rh>44?30:27,'#D31118')});
+  const out=S.players.filter(p=>p.st).sort(byNum),oh=out.length?Math.min(out.length,5)*40+60:0;
   if(subs.length){
     y+=18;x.fillStyle='#D31118';x.font='italic 800 32px "Barlow Condensed", sans-serif';x.fillText('SUBSTITUTES',lx,y+26);y+=42;
-    const sh=Math.min(42,Math.floor((py+ph-y)/subs.length)-6);
+    const sh=Math.min(42,Math.floor((py+ph-oh-y)/subs.length)-6);
     subs.forEach(p=>{if(sh>=26)row(p.num,p.name,'',sh,Math.min(26,sh-10),'#3a3a3a')});
+  }
+  if(out.length){
+    y=Math.max(y+12,py+ph-oh+12);x.fillStyle='#bdb5b5';x.font='italic 800 28px "Barlow Condensed", sans-serif';x.fillText('UNAVAILABLE',lx,y+24);y+=36;
+    out.slice(0,5).forEach(p=>{const y0=y;row('',p.name,ST[p.st].toUpperCase(),34,22,'#2a2a2a');drawIcon(x,p.st,lx+26,y0+17,24)});
   }
   x.fillStyle='rgba(255,255,255,.5)';x.font='600 22px "Barlow Condensed", sans-serif';x.fillText(S.sub.toUpperCase(),40,H-22);
   return c;
+}
+function drawIcon(x,t,cx,cy,sz){
+  x.save();x.translate(cx,cy);x.rotate(t==='inj'?-Math.PI/4:Math.PI/4);const k=sz/24;
+  if(t==='away'){x.translate(-12*k,-12*k);x.scale(k,k);x.fillStyle='#9fd3ff';x.fill(new Path2D(PLANE))}
+  else{x.scale(k,k);x.fillStyle='#f3c9a0';x.strokeStyle='#6b4426';x.lineWidth=1.2;x.beginPath();x.roundRect?x.roundRect(-10.5,-4.5,21,9,4.5):x.rect(-10.5,-4.5,21,9);x.fill();x.stroke();x.fillStyle='#fff4e6';x.fillRect(-3.5,-4.5,7,9);x.strokeRect(-3.5,-4.5,7,9)}
+  x.restore();
 }
 let dlNS=null;
 const slug=t=>t.replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-').toLowerCase();
@@ -922,7 +955,7 @@ function renderPotm(){
 }
 $('potmbtn').onclick=()=>{
   const L=S.live;if(!L)return;
-  const ids=L.played.filter(byId).concat(S.players.map(p=>p.id).filter(id=>!L.played.includes(id)));
+  const ids=L.played.filter(byId).concat(S.players.filter(p=>!p.st).map(p=>p.id).filter(id=>!L.played.includes(id)));
   modal(`<h3>Player of the match</h3><div class="pick">${ids.map(id=>`<button type="button" data-id="${id}" class="${L.potm===id?'on':''} ${L.played.includes(id)?'':'off'}">${esc(byId(id).num)} ${esc(byId(id).name)}</button>`).join('')}</div><div class="bar"><button class="btn" id="potmclr">Clear</button><button class="btn" data-close>Done</button></div>`,()=>{
     $('sheet').addEventListener('click',e=>{const b=e.target.closest('.pick [data-id]');if(!b)return;L.potm=b.dataset.id;save();renderPotm();closeModal();toast(pname(L.potm)+' is player of the match')});
     $('potmclr').onclick=()=>{L.potm=null;save();renderPotm();closeModal()};
