@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **2.3** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **2.4** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -56,6 +56,7 @@ At the end of the season, use **••• → Close season** on the Stats tab. N
 ## Where your data is saved
 - **Shared database:** the app saves to the club's Firebase database, so every phone sees the same squad, live score and results within a second or two. It keeps working without signal and catches up when the phone is back online.
 - **Who can change things:** anyone with the link can **view**. Coaches tap **Coach sign in** (email and password, or Google) to make changes. The first time, choose **Create account** and tap the confirmation link Firebase emails you.
+- **Coaches only:** if someone who isn't on the coaches list signs in, the app removes that account and opens the parents view. For extra safety, turn off new sign-ups in Firebase (**Authentication → Settings → User actions → Enable create (sign-up)**) once every coach has an account.
 - **Coaches list:** the main coach adds or removes coaches in **••• → Team settings → Coaches who can make changes**. The database's security rules (`firestore.rules` in this repo) enforce the same list.
 - **The Claude version** keeps its own separate copy in the owner's Claude account.
 - **Backups:** use **Back up all data** now and then, and always before closing a season.
