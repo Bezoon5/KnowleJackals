@@ -634,8 +634,16 @@ function finishModal(){
 /* ---------- stats ---------- */
 function renderStats(){
   const el=$('stats');
-  const addBtn='<div class="bar" style="justify-content:flex-end;margin-bottom:14px"><button class="btn go" type="button" data-addm>Add a past result</button></div>';
+  const addBtn=`<div class="bar" style="justify-content:flex-end;margin-bottom:14px">${M.length?'<button class="btn" type="button" data-exp="results">Export results</button><button class="btn" type="button" data-exp="players">Export player stats</button>':''}<button class="btn go" type="button" data-addm>Add a past result</button></div>`;
   if(!M.length){el.innerHTML=addBtn+'<div class="card"><h2>No matches yet</h2><p class="empty">Start a game on the Match tab and press Full time to save it here, or add results you have already played. Results, scorers, assists and appearances build up as the season goes on.</p></div>';return}
+  const {t,pl}=computeStats();
+  const rows=Object.values(pl).sort((a,b)=>b[sortK]-a[sortK]||b.g-a.g||b.a-a.a||a.name.localeCompare(b.name));
+  const gd=t.gf-t.ga,res=m=>m.gf>m.ga?'W':m.gf<m.ga?'L':'D';
+  const top=rows.slice().sort((a,b)=>b.g-a.g)[0];
+  const th=(k,l)=>`<th><button type="button" data-sort="${k}" class="${sortK===k?'on':''}">${l}</button></th>`;
+  return renderStatsHTML(el,addBtn,t,rows,gd,res,top,th);
+}
+function computeStats(){
   const t={w:0,d:0,l:0,gf:0,ga:0,cs:0},pl={};
   const P=o=>{if(!o||!o.id||o.id==='og')return null;return pl[o.id]=pl[o.id]||{id:o.id,name:o.name,num:o.num,apps:0,st:0,g:0,a:0,potm:0}};
   M.forEach(m=>{
@@ -645,10 +653,9 @@ function renderStats(){
     const pm=P(m.potm);if(pm)pm.potm++;
   });
   Object.values(pl).forEach(r=>{const p=byId(r.id);if(p){r.name=p.name;r.num=p.num}r.ga=r.g+r.a});
-  const rows=Object.values(pl).sort((a,b)=>b[sortK]-a[sortK]||b.g-a.g||b.a-a.a||a.name.localeCompare(b.name));
-  const gd=t.gf-t.ga,res=m=>m.gf>m.ga?'W':m.gf<m.ga?'L':'D';
-  const top=rows.slice().sort((a,b)=>b.g-a.g)[0];
-  const th=(k,l)=>`<th><button type="button" data-sort="${k}" class="${sortK===k?'on':''}">${l}</button></th>`;
+  return{t,pl};
+}
+function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th){
   el.innerHTML=addBtn+`
   <div class="tiles">
     <div class="tile"><b>${M.length}</b><span>Played</span></div>
@@ -681,6 +688,7 @@ function renderStats(){
 $('stats').addEventListener('click',async e=>{
   const s=e.target.closest('[data-sort]');if(s){sortK=s.dataset.sort;return renderStats()}
   if(e.target.closest('[data-addm]'))return matchForm(null);
+  const ex=e.target.closest('[data-exp]');if(ex)return exportCSV(ex.dataset.exp);
   const sh=e.target.closest('[data-sharem]');if(sh){const m=M.find(x=>x.id===sh.dataset.sharem);return m&&shareSummary(m)}
   const ed=e.target.closest('[data-editm]');if(ed){const m=M.find(x=>x.id===ed.dataset.editm);return m&&matchForm(m)}
   const b=e.target.closest('[data-delm]');if(!b)return;
@@ -817,6 +825,36 @@ function drawIcon(x,t,cx,cy,sz){
   x.restore();
 }
 let dlNS=null;
+async function saveFile(fname,blob,type){
+  try{if(!dlNS&&window.claude&&window.claude.use)dlNS=await window.claude.use('downloads');
+    if(dlNS){await dlNS.save({filename:fname,data:blob});return toast('File saved')}
+    const file=new File([blob],fname,{type});
+    if(/Mobi|Android|iPhone|iPad/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file]});return}catch(err){if(err&&err.name==='AbortError')return}}
+    const u=URL.createObjectURL(blob),link=document.createElement('a');link.href=u;link.download=fname;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);toast('File downloaded');
+  }catch(e){toast(e&&e.code==='declined'?'Save cancelled':e&&e.code==='host_unavailable'?'This app can’t save files — open it in a browser':'Couldn’t save the file')}
+}
+function exportCSV(kind){
+  const q=v=>{v=v==null?'':String(v);if(/^[=+\-@\t\r]/.test(v))v="'"+v;return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  let rows,name;
+  if(kind==='results'){
+    rows=[['Date','Opposition','Home/Away','Competition','Format','Kick-off','Venue',S.short+' goals','Opposition goals','Result','Scorers (assist)','Opposition goal minutes','Player of the match','Started','Subs used']];
+    M.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).forEach(m=>{
+      const P=summaryParts(m);
+      rows.push([m.date,m.opp,m.ha,m.comp,m.format?m.format+'-a-side':'',m.ko,m.venue,m.gf,m.ga,P.res==='WIN'?'W':P.res==='DRAW'?'D':'L',
+        P.goals.map(e=>`${e.min!=null?e.min+"' ":''}${e.scorer?e.scorer.name:'Unknown'}${e.assist?' ('+e.assist.name+')':''}`).join('; '),
+        P.opp.filter(e=>e.min!=null).map(e=>e.min+"'").join('; '),m.potm?m.potm.name:'',P.st.map(p=>p.name).join('; '),P.sb.map(p=>p.name).join('; ')]);
+    });
+    name='results';
+  }else{
+    const {t,pl}=computeStats();
+    rows=[['Number','Player','Appearances','Starts','Goals','Assists','Goal involvements','Player of the match','Goals per game']];
+    Object.values(pl).sort((a,b)=>b.ga-a.ga||b.g-a.g||a.name.localeCompare(b.name)).forEach(r=>rows.push([r.num,r.name,r.apps,r.st,r.g,r.a,r.ga,r.potm,r.apps?(r.g/r.apps).toFixed(2):'0.00']));
+    rows.push([],['Team','Played','Won','Drawn','Lost','Goals for','Goals against','Goal difference','Clean sheets'],[S.team,M.length,t.w,t.d,t.l,t.gf,t.ga,t.gf-t.ga,t.cs]);
+    name='player-stats';
+  }
+  const csv='\ufeff'+rows.map(r=>r.map(q).join(',')).join('\r\n');
+  saveFile(slug(S.team+' '+name+' '+new Date().toISOString().slice(0,10))+'.csv',new Blob([csv],{type:'text/csv'}),'text/csv');
+}
 const slug=t=>t.replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-').toLowerCase();
 async function shareImage(title,build,text,fname){
   modal(`<h3>${title}</h3><p class="empty">Building image…</p>`);
@@ -987,7 +1025,9 @@ function matchForm(orig){
     <p class="lab">Who played <span style="color:var(--mut)">— tap once for started, twice for came on as a sub, again to clear</span> <button type="button" class="btn" id="r-all" style="min-height:32px;font-size:14px;margin-left:8px">All started</button></p>
     <div class="pick" id="r-played">${people.map(p=>`<button type="button" data-id="${esc(p.id)}" class="${role[p.id]==='start'?'on':role[p.id]==='sub'?'subon':''}">${esc(p.num)} ${esc(p.name)}<span>${chipTxt(p.id)}</span></button>`).join('')}</div>
     <label class="f" style="margin-top:14px">Player of the match<select id="r-potm">${opts(m.potm?m.potm.id:'','None chosen')}</select></label>
-    <div class="bar"><button class="btn" data-close>Cancel</button><button class="btn go" id="r-save">Save result</button></div>`,()=>{
+    <div class="bar">${orig?'<button class="btn" id="r-del" style="margin-right:auto">Delete match</button>':''}<button class="btn" data-close>Cancel</button><button class="btn go" id="r-save">Save result</button></div>`,()=>{
+    if(orig)$('r-del').onclick=async()=>{const b=$('r-del');if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Tap again to delete';b.classList.add('go');return}
+      try{if(db)await db.doc('matches/'+m.id).delete();else{M=M.filter(x=>x.id!==m.id);saveM();renderStats()}closeModal();toast('Match deleted')}catch(err){toast('Could not delete — try again')}};
     const drawGoals=()=>{
       const n=Math.min(30,Math.max(0,parseInt($('r-gf').value)||0));
       while(goals.length<n)goals.push({s:'',a:'',min:''});goals.length=n;
