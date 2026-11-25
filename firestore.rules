@@ -15,7 +15,7 @@ service cloud.firestore {
         myEmail() in get(/databases/$(database)/documents/config/coaches).data.emails);
     }
     match /config/coaches {
-      allow read: if true;
+      allow read: if isCoach();
       allow write: if isOwner();
     }
     match /club/{doc} {
