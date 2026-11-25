@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **1.12** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **2.0** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -48,9 +48,11 @@ What's in it depends on the tab you're on:
 At the end of the season, use **••• → Close season** on the Stats tab. Nothing is deleted. The season is kept with all its results and can be picked from the Season list at any time. Your squad and settings carry over into the new season.
 
 ## Where your data is saved
-- **This GitHub link:** the first time it's opened on a phone, it loads the squad and results up to 25 Nov 2026. After that, everything is saved **on that phone only**. Each coach's phone keeps its own copy, and clearing browser data takes it back to the starting data.
-- **The Claude version:** the squad and results are saved to the owner's Claude account and are the same on every device. Share it from Claude's Share menu so coaches see the same live data.
-- **Backups:** use **Back up all data** now and then, and always before closing a season. **Restore from a backup** puts everything back as it was.
+- **Shared database:** the app saves to the club's Firebase database, so every phone sees the same squad, live score and results within a second or two. It keeps working without signal and catches up when the phone is back online.
+- **Who can change things:** anyone with the link can **view**. Coaches tap **Coach sign in** (email and password, or Google) to make changes. The first time, choose **Create account** and tap the confirmation link Firebase emails you.
+- **Coaches list:** the main coach adds or removes coaches in **••• → Team settings → Coaches who can make changes**. The database's security rules (`firestore.rules` in this repo) enforce the same list.
+- **The Claude version** keeps its own separate copy in the owner's Claude account.
+- **Backups:** use **Back up all data** now and then, and always before closing a season.
 
 ## If an update breaks something
 Every version from 1.3 onwards has its own link in [CHANGELOG.md](CHANGELOG.md). Open the previous version's link and carry on; your data on that phone is shared between versions. The main link can also be rolled back to any earlier version without losing history.
@@ -63,3 +65,4 @@ Every version from 1.3 onwards has its own link in [CHANGELOG.md](CHANGELOG.md).
 | `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `manifest.webmanifest` | Home-screen icon and app settings |
 | `versions/` | A working copy of each earlier version |
 | `CHANGELOG.md` | Version history with links |
+| `firestore.rules` | Security rules pasted into Firebase (who can read and write) |
