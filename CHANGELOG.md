@@ -10,9 +10,9 @@ Each version can still be opened at its own link. If an update breaks something,
 | 1.5 | 25 Nov 2026 | ••• options menu, Home/Away and League/Cup fixture form, green keeper shirt | [v1.5](https://bezoon5.github.io/KnowleJackals/versions/v1.5/) |
 | 1.4 | 25 Nov 2026 | Goalkeeper stats, season stats image, crest home-screen icon | [v1.4](https://bezoon5.github.io/KnowleJackals/versions/v1.4/) |
 | 1.3 | 25 Nov 2026 | Squad and season results built in, blank shirt numbers | [v1.3](https://bezoon5.github.io/KnowleJackals/versions/v1.3/) |
-| 1.2 | 25 Nov 2026 | Penalties, CSV exports | Git tag `v1.2` |
-| 1.1 | 25 Nov 2026 | Injured and away players | Git tag `v1.1` |
-| 1.0 | 25 Nov 2026 | First version | Git tag `v1.0` |
+| 1.2 | 25 Nov 2026 | Penalties, CSV exports | commit `60d1c46` |
+| 1.1 | 25 Nov 2026 | Injured and away players | commit `5c9bd8a` |
+| 1.0 | 25 Nov 2026 | First version | commit `582da42` |
 
 ## Rolling back the main link
 To make https://bezoon5.github.io/KnowleJackals/ itself go back to an older version, ask Claude to "roll the app back to version X". Claude copies that version's `index.html` back to the top of the repo, so nothing in the history is lost. The same applies to the Claude version of the app.
