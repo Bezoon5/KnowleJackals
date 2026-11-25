@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **2.7** (current) | 25 Nov 2026 | Renaming a player in the squad also renames them in every saved result (scorers, assists, line-ups, player of the match, exports) | [v2.7](https://bezoon5.github.io/KnowleJackals/versions/v2.7/) |
+| **2.8** (current) | 25 Nov 2026 | Broadcast view reveals players more slowly (0.25s each, subs after the last player); changing a shirt number also updates saved results | [v2.8](https://bezoon5.github.io/KnowleJackals/versions/v2.8/) |
+| 2.7 | 25 Nov 2026 | Renaming a player in the squad also renames them in every saved result (scorers, assists, line-ups, player of the match, exports) | [v2.7](https://bezoon5.github.io/KnowleJackals/versions/v2.7/) |
 | 2.6 | 25 Nov 2026 | Tidy-up and speed: Firebase loads faster, smaller home-screen icons, shared code for the share images and saving files, built-in squad and results removed from the code (they live in the shared database) | [v2.6](https://bezoon5.github.io/KnowleJackals/versions/v2.6/) |
 | 2.5 | 25 Nov 2026 | Fonts are now stored with the app instead of loading from Google Fonts, so visitors' details aren't sent to Google for them | [v2.5](https://bezoon5.github.io/KnowleJackals/versions/v2.5/) |
 | 2.4 | 25 Nov 2026 | Only coaches on the list can sign in: anyone else's account is removed and they're taken to the parents view | [v2.4](https://bezoon5.github.io/KnowleJackals/versions/v2.4/) |
