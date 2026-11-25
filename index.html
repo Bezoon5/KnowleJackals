@@ -160,6 +160,9 @@ input[type=text],input[type=date],input[type=time],select{min-height:44px;font-s
 .tile span{color:var(--mut);font-size:14px}
 .tile.hi{background:var(--red);border-color:var(--red)}
 .tile.hi span{color:#fff}
+.seasonbar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:12px}
+.seasonbar label.f{min-width:220px;flex:1;max-width:360px}
+.sbadge{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--mut);font-size:14px}
 .statbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
 .fgroup{display:flex;gap:8px;flex-wrap:wrap}
 .fchk{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 10px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-weight:600;cursor:pointer}
@@ -400,6 +403,8 @@ function normalize(s){
   if(!FORMS[s.format].includes(s.form))s.form=FORMS[s.format][0];
   s.fix=Object.assign({opp:'',date:'',ko:'',ha:'Home',venue:'',comp:'',meet:''},s.fix||{});
   if(s.fix.ha!=='Home'&&s.fix.ha!=='Away')s.fix.ha='Away';
+  if(!Array.isArray(s.seasons)||!s.seasons.length)s.seasons=[{id:'s1',name:'Under 12s 2026/27'}];
+  if(!s.seasons.some(x=>x.id===s.curSeason))s.curSeason=s.seasons[s.seasons.length-1].id;
   s.home=Object.assign({ko:'10:30',meet:'10:00',venue:'West Warwickshire Sports Complex'},s.home||{});
   s.team=s.team||'Knowle Jackals';s.short=s.short||'Knowle';s.sub=s.sub??'Knowle Football Club · Est. 1926';s.crest=s.crest||'';
   s.live=s.live||null;return s;
@@ -689,7 +694,7 @@ function finishModal(){
       const snapP=id=>{const p=byId(id);return p?{id,name:p.name,num:p.num}:null};
       const f=S.fix,m={id:'m'+Date.now().toString(36),finishedAt:Date.now(),date:f.date||new Date().toISOString().slice(0,10),ko:f.ko,opp:oppName(),ha:f.ha,venue:f.venue,comp:f.comp,format:L.format||N(),gf:sc.f,ga:sc.a,duration:L.acc,cap:L.cap||null,
         events:L.events.slice().sort((a,b)=>a.min-b.min).map(e=>e.t==='for'?{t:'for',min:e.min,scorer:e.scorer==='og'?{id:'og',name:'Own goal'}:snapP(e.scorer),assist:e.assist?snapP(e.assist):null,pen:!!e.pen}:{t:'against',min:e.min}),
-        played:L.played.map(snapP).filter(Boolean),lineup:L.lineup,potm:L.potm?snapP(L.potm):null,gk:L.gk?snapP(L.gk):null};
+        played:L.played.map(snapP).filter(Boolean),lineup:L.lineup,potm:L.potm?snapP(L.potm):null,gk:L.gk?snapP(L.gk):null,season:S.curSeason};
       $('fsave').disabled=true;
       try{
         if(db)await db.collection('matches').doc(m.id).set(m);
@@ -703,16 +708,24 @@ function finishModal(){
 
 /* ---------- stats ---------- */
 let fil={League:true,Cup:true};
-const FM=()=>fil.League&&fil.Cup?M:M.filter(m=>fil[m.comp]);
+let viewSeason=null;
+const VS=()=>viewSeason&&(viewSeason==='all'||S.seasons.some(x=>x.id===viewSeason))?viewSeason:S.curSeason;
+const seasonOf=m=>m.season||S.seasons[0].id;
+const seasonName=id=>id==='all'?'All seasons':(S.seasons.find(x=>x.id===id)||{}).name||'Season';
+const SM=()=>VS()==='all'?M:M.filter(m=>seasonOf(m)===VS());
+const FM=()=>fil.League&&fil.Cup?SM():SM().filter(m=>fil[m.comp]);
+function nextSeasonName(n){let t=n.replace(/Under\s*(\d+)/i,(a,d)=>'Under '+(+d+1)).replace(/U(\d+)\b/,(a,d)=>'U'+(+d+1)).replace(/(\d{4})\/(\d{2})/,(a,y,yy)=>`${+y+1}/${String((+yy+1)%100).padStart(2,'0')}`);return t===n?n+' (next)':t}
 const filLabel=()=>fil.League&&fil.Cup?'':fil.League?'League':'Cup';
 function renderStats(){
   const el=$('stats');
-  const nl=M.filter(m=>m.comp==='League').length,nc=M.filter(m=>m.comp==='Cup').length;
+  const SMs=SM(),nl=SMs.filter(m=>m.comp==='League').length,nc=SMs.filter(m=>m.comp==='Cup').length;
+  const cur=S.seasons.find(x=>x.id===VS());
+  const sbar=`<div class="seasonbar"><label class="f">Season<select id="seasonsel">${S.seasons.slice().reverse().map(x=>`<option value="${esc(x.id)}" ${VS()===x.id?'selected':''}>${esc(x.name)}${x.closed?' (closed)':x.id===S.curSeason?' (current)':''}</option>`).join('')}${S.seasons.length>1?`<option value="all" ${VS()==='all'?'selected':''}>All seasons</option>`:''}</select></label>${cur&&cur.closed?`<span class="sbadge">Season closed${cur.closedAt?' '+esc(fmtDate(cur.closedAt,{day:'numeric',month:'short',year:'numeric'})):''}</span>`:''}</div>`;
   const chk=(k,n)=>`<label class="fchk${fil[k]?' on':''}"><input type="checkbox" data-fil="${k}" ${fil[k]?'checked':''}><span class="box" aria-hidden="true"></span>${k} <small>${n}</small></label>`;
-  const addBtn=M.length?`<div class="statbar"><div class="fgroup" role="group" aria-label="Show matches">${chk('League',nl)}${chk('Cup',nc)}</div><button class="btn white" type="button" data-statimg ${FM().length?'':'disabled'}>Share stats image</button></div>
-    ${filLabel()?`<p class="note" style="margin:-4px 0 12px">Showing ${filLabel().toLowerCase()} matches only (${FM().length}). Tick both to see every match${M.length-nl-nc?`, including ${M.length-nl-nc} with no competition set`:''}.</p>`:''}`
-    :'<div class="bar" style="justify-content:flex-end;margin-bottom:14px"><button class="btn go" type="button" data-addm>Add a past result</button></div>';
-  if(!M.length){el.innerHTML=addBtn+'<div class="card"><h2>No matches yet</h2><p class="empty">Start a game on the Match tab and press Full time to save it here, or add results you have already played. Results, scorers, assists and appearances build up as the season goes on.</p></div>';return}
+  const addBtn=sbar+(SMs.length?`<div class="statbar"><div class="fgroup" role="group" aria-label="Show matches">${chk('League',nl)}${chk('Cup',nc)}</div><button class="btn white" type="button" data-statimg ${FM().length?'':'disabled'}>Share stats image</button></div>
+    ${filLabel()?`<p class="note" style="margin:-4px 0 12px">Showing ${filLabel().toLowerCase()} matches only (${FM().length}). Tick both to see every match${SMs.length-nl-nc?`, including ${SMs.length-nl-nc} with no competition set`:''}.</p>`:''}`
+    :'<div class="bar" style="justify-content:flex-end;margin-bottom:14px"><button class="btn go" type="button" data-addm>Add a past result</button></div>');
+  if(!SMs.length){el.innerHTML=addBtn+`<div class="card"><h2>No matches ${VS()===S.curSeason&&S.seasons.length>1?'this season ':''}yet</h2><p class="empty">Start a game on the Match tab and press Full time to save it here, or add results you have already played. ${S.seasons.length>1?'Earlier seasons are in the Season list above.':'Results, scorers, assists and appearances build up as the season goes on.'}</p></div>`;return}
   if(!FM().length){el.innerHTML=addBtn+`<div class="card"><h2>No ${filLabel().toLowerCase()} matches yet</h2><p class="empty">Set a match to ${filLabel()} with Edit on the result, or tick both boxes to see everything.</p></div>`;return}
   const {t,pl,gks}=computeStats();
   const rows=Object.values(pl).sort((a,b)=>b[sortK]-a[sortK]||b.g-a.g||b.a-a.a||a.name.localeCompare(b.name));
@@ -769,12 +782,12 @@ function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th,gks){
       <div class="bar" style="margin-top:6px"><button class="btn go" type="button" data-sharem="${esc(m.id)}">Share summary</button><button class="btn" type="button" data-editm="${esc(m.id)}">Edit</button><button class="btn" type="button" data-delm="${esc(m.id)}">Delete match</button></div>
     </div></details>`}).join('')}`;
 }
-$('stats').addEventListener('change',e=>{const c=e.target.closest('[data-fil]');if(!c)return;fil[c.dataset.fil]=c.checked;if(!fil.League&&!fil.Cup)fil={League:true,Cup:true};renderStats()});
+$('stats').addEventListener('change',e=>{if(e.target.id==='seasonsel'){viewSeason=e.target.value;return renderStats()}const c=e.target.closest('[data-fil]');if(!c)return;fil[c.dataset.fil]=c.checked;if(!fil.League&&!fil.Cup)fil={League:true,Cup:true};renderStats()});
 $('stats').addEventListener('click',async e=>{
   const s=e.target.closest('[data-sort]');if(s){sortK=s.dataset.sort;return renderStats()}
   if(e.target.closest('[data-addm]'))return matchForm(null);
   const ex=e.target.closest('[data-exp]');if(ex)return exportCSV(ex.dataset.exp);
-  if(e.target.closest('[data-statimg]'))return shareImage('Season stats',drawStats,statsText(),slug(S.team+' season stats '+new Date().toISOString().slice(0,10))+'.png');
+  if(e.target.closest('[data-statimg]'))return shareImage('Season stats',drawStats,statsText(),slug(S.team+' '+seasonName(VS())+' stats')+'.png');
   const sh=e.target.closest('[data-sharem]');if(sh){const m=M.find(x=>x.id===sh.dataset.sharem);return m&&shareSummary(m)}
   const ed=e.target.closest('[data-editm]');if(ed){const m=M.find(x=>x.id===ed.dataset.editm);return m&&matchForm(m)}
   const b=e.target.closest('[data-delm]');if(!b)return;
@@ -924,10 +937,10 @@ function exportCSV(kind){
   const q=v=>{v=v==null?'':String(v);if(/^[=+\-@\t\r]/.test(v))v="'"+v;return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
   let rows,name;
   if(kind==='results'){
-    rows=[['Date','Opposition','Home/Away','Competition','Format','Kick-off','Venue',S.short+' goals','Opposition goals','Result','Scorers (assist)','Opposition goal minutes','Player of the match','Started','Subs used']];
+    rows=[['Season','Date','Opposition','Home/Away','Competition','Format','Kick-off','Venue',S.short+' goals','Opposition goals','Result','Scorers (assist)','Opposition goal minutes','Player of the match','Started','Subs used']];
     FM().slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')).forEach(m=>{
       const P=summaryParts(m);
-      rows.push([m.date,m.opp,m.ha,m.comp,m.format?m.format+'-a-side':'',m.ko,m.venue,m.gf,m.ga,P.res==='WIN'?'W':P.res==='DRAW'?'D':'L',
+      rows.push([seasonName(seasonOf(m)),m.date,m.opp,m.ha,m.comp,m.format?m.format+'-a-side':'',m.ko,m.venue,m.gf,m.ga,P.res==='WIN'?'W':P.res==='DRAW'?'D':'L',
         P.goals.map(e=>`${e.min!=null?e.min+"' ":''}${e.scorer?e.scorer.name:'Unknown'}${e.pen?' (pen)':e.assist?' ('+e.assist.name+')':''}`).join('; '),
         P.opp.filter(e=>e.min!=null).map(e=>e.min+"'").join('; '),m.potm?m.potm.name:'',P.st.map(p=>p.name).join('; '),P.sb.map(p=>p.name).join('; ')]);
     });
@@ -940,7 +953,7 @@ function exportCSV(kind){
     name='player-stats';
   }
   const csv='\ufeff'+rows.map(r=>r.map(q).join(',')).join('\r\n');
-  saveFile(slug(S.team+' '+name+' '+new Date().toISOString().slice(0,10))+'.csv',new Blob([csv],{type:'text/csv'}),'text/csv');
+  saveFile(slug(S.team+' '+seasonName(VS())+' '+name)+'.csv',new Blob([csv],{type:'text/csv'}),'text/csv');
 }
 const slug=t=>t.replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-').toLowerCase();
 async function shareImage(title,build,text,fname){
@@ -1054,7 +1067,7 @@ async function drawSummary(m){
 }
 function statsText(){
   const {t,pl,gks}=computeStats(),rows=Object.values(pl).sort((a,b)=>b.ga-a.ga||b.g-a.g||a.name.localeCompare(b.name)),gd=t.gf-t.ga;
-  const L=[`*${S.team.toUpperCase()} – ${filLabel()?filLabel().toUpperCase():'SEASON'} STATS*`,`P${FM().length} W${t.w} D${t.d} L${t.l} · GF ${t.gf} GA ${t.ga} · GD ${gd>0?'+':''}${gd} · Clean sheets ${t.cs}`];
+  const L=[`*${S.team.toUpperCase()} – ${filLabel()?filLabel().toUpperCase():'SEASON'} STATS*`,seasonName(VS()),`P${FM().length} W${t.w} D${t.d} L${t.l} · GF ${t.gf} GA ${t.ga} · GD ${gd>0?'+':''}${gd} · Clean sheets ${t.cs}`];
   Object.values(gks).forEach(k=>L.push(`🧤 ${k.name}: ${k.cs} clean sheets in ${k.games} games, ${k.ga} conceded`));
   L.push('','*Players* (goals / assists / GI / POTM)');
   rows.forEach(r=>L.push(`${r.name}: ${r.g} / ${r.a} / ${r.ga}${r.potm?' / '+r.potm:''}`));
@@ -1072,7 +1085,7 @@ async function drawStats(){
   x.save();x.beginPath();x.arc(115,115,80,0,7);x.fillStyle='#fff';x.fill();x.clip();if(img)x.drawImage(img,37,37,156,156);x.restore();
   x.fillStyle='#fff';fitFont(x,S.team.toUpperCase(),W-270,'italic 800',76,40);x.fillText(S.team.toUpperCase(),228,100);
   const ds=FM().map(m=>m.date).filter(Boolean).sort();x.fillStyle='#d6d0d0';F('600',32);
-  x.fillText(`${filLabel()?filLabel().toUpperCase()+' MATCHES':'SEASON SO FAR'} · ${FM().length} GAMES${ds.length?' · '+fmtDate(ds[0],{day:'numeric',month:'short'}).toUpperCase()+' – '+fmtDate(ds[ds.length-1],{day:'numeric',month:'short'}).toUpperCase():''}`,228,150);
+  x.fillText(`${seasonName(VS()).toUpperCase()}${filLabel()?' · '+filLabel().toUpperCase():''} · ${FM().length} GAMES${ds.length?' · '+fmtDate(ds[0],{day:'numeric',month:'short'}).toUpperCase()+' – '+fmtDate(ds[ds.length-1],{day:'numeric',month:'short'}).toUpperCase():''}`,228,150);
   const by=236;x.fillStyle='#D31118';x.beginPath();x.moveTo(40,by);x.lineTo(380,by);x.lineTo(356,by+56);x.lineTo(40,by+56);x.fill();
   x.fillStyle='#fff';x.beginPath();x.moveTo(392,by);x.lineTo(406,by);x.lineTo(382,by+56);x.lineTo(368,by+56);x.fill();
   F('italic 800',38);x.fillText(filLabel()?filLabel().toUpperCase()+' STATS':'SEASON STATS',60,by+41);
@@ -1156,6 +1169,7 @@ function matchForm(orig){
       <label class="f">Date<input type="date" id="r-date" value="${esc(m.date)}"></label>
       <label class="f">Opposition<input type="text" id="r-opp" value="${esc(m.opp==='Opposition'?'':m.opp)}" placeholder="Team name"></label>
       <label class="f">Home or away<select id="r-ha">${['Home','Away'].map(o=>`<option ${m.ha===o?'selected':''}>${o}</option>`).join('')}</select></label>
+      <label class="f">Season<select id="r-season">${S.seasons.map(x=>`<option value="${esc(x.id)}" ${(orig?seasonOf(orig):VS()==='all'?S.curSeason:VS())===x.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
       <label class="f">Format<select id="r-fmt">${[7,9,11].map(o=>`<option value="${o}" ${+m.format===o?'selected':''}>${o}-a-side</option>`).join('')}</select></label>
       <label class="f">Competition<select id="r-comp">${['','League','Cup'].concat(m.comp&&!['League','Cup'].includes(m.comp)?[m.comp]:[]).map(o=>`<option value="${esc(o)}" ${m.comp===o?'selected':''}>${o?esc(o):'Not set'}</option>`).join('')}</select></label>
       <label class="f">Our score<input type="text" inputmode="numeric" id="r-gf" value="${m.gf}"></label>
@@ -1191,7 +1205,7 @@ function matchForm(orig){
       const ev=goals.slice(0,gf).map(g=>({t:'for',min:num(g.min),scorer:g.s==='og'?{id:'og',name:'Own goal'}:sn(g.s),assist:g.a&&g.a!==g.s&&g.a!=='pen'?sn(g.a):null,pen:g.a==='pen'}))
         .concat(Array.from({length:ga},(_,i)=>({t:'against',min:oppMins[i]??null})))
         .sort((a,b)=>(a.min??999)-(b.min??999));
-      Object.assign(m,{date:$('r-date').value,opp:$('r-opp').value.trim()||'Opposition',ha:$('r-ha').value,format:+$('r-fmt').value,comp:$('r-comp').value.trim(),gf,ga,events:ev,played:Object.keys(role).map(sn).filter(Boolean),lineup:Object.keys(role).filter(id=>role[id]==='start'),potm:sn(potm),gk:sn(gk),finishedAt:m.finishedAt||Date.now(),manual:orig?m.manual:true});
+      Object.assign(m,{date:$('r-date').value,opp:$('r-opp').value.trim()||'Opposition',ha:$('r-ha').value,format:+$('r-fmt').value,season:$('r-season').value,comp:$('r-comp').value.trim(),gf,ga,events:ev,played:Object.keys(role).map(sn).filter(Boolean),lineup:Object.keys(role).filter(id=>role[id]==='start'),potm:sn(potm),gk:sn(gk),finishedAt:m.finishedAt||Date.now(),manual:orig?m.manual:true});
       $('r-save').disabled=true;
       try{
         if(db)await db.collection('matches').doc(m.id).set(clone(m));
@@ -1202,6 +1216,41 @@ function matchForm(orig){
   });
 }
 
+/* ---------- seasons ---------- */
+function closeSeason(){
+  if(S.live)return toast('Finish or discard the match in progress first');
+  const cur=S.seasons.find(x=>x.id===S.curSeason),ms=M.filter(m=>seasonOf(m)===cur.id);
+  const w=ms.filter(m=>m.gf>m.ga).length,d=ms.filter(m=>m.gf===m.ga).length,l=ms.length-w-d;
+  modal(`<h3>Close season</h3>
+    <p style="margin:0 0 6px"><b>${esc(cur.name)}</b> ends with ${ms.length} match${ms.length===1?'':'es'}: ${w} won, ${d} drawn, ${l} lost.</p>
+    <p class="note" style="margin:0 0 14px">Nothing is deleted. The season is kept with all its results and stats, and you can pick it from the Season list on the Stats tab at any time.</p>
+    <label class="f">Name of the new season<input type="text" id="ns-name" maxlength="40" value="${esc(nextSeasonName(cur.name))}"></label>
+    <label class="tag on" style="margin-top:12px;display:inline-flex"><input type="checkbox" id="ns-clear" checked style="position:static;opacity:1;width:18px;height:18px;accent-color:var(--red)">Mark everyone available again</label>
+    <p class="note">Your squad, team settings and home details carry over. You can still add late results to the closed season with Add a past result.</p>
+    <div class="bar"><button class="btn" data-close>Cancel</button><button class="btn go" id="ns-go">Close season and start new</button></div>`,()=>{
+    $('ns-go').onclick=()=>{
+      const b=$('ns-go');if(!b.dataset.armed){b.dataset.armed='1';b.textContent='Tap again to confirm';return}
+      const name=$('ns-name').value.trim()||nextSeasonName(cur.name);
+      cur.closed=true;cur.closedAt=new Date().toISOString().slice(0,10);
+      const id='s'+(Math.max(...S.seasons.map(x=>parseInt(x.id.slice(1))||0))+1);
+      S.seasons.push({id,name});S.curSeason=id;viewSeason=id;
+      if($('ns-clear').checked)S.players.forEach(p=>delete p.st);
+      S.fix=Object.assign(S.fix,{opp:'',date:''});
+      closeModal();save();fillFix();renderAll();renderSquad();toast(`${cur.name} closed — welcome to ${name}`);
+    };
+  });
+}
+function renameSeason(){
+  const cur=S.seasons.find(x=>x.id===(VS()==='all'?S.curSeason:VS()));
+  modal(`<h3>Rename season</h3><label class="f">Season name<input type="text" id="rs-name" maxlength="40" value="${esc(cur.name)}"></label><div class="bar"><button class="btn" data-close>Cancel</button><button class="btn go" id="rs-go">Save</button></div>`,()=>{
+    $('rs-go').onclick=()=>{const n=$('rs-name').value.trim();if(!n)return;cur.name=n;closeModal();save();renderStats();toast('Season renamed')};
+  });
+}
+function reopenSeason(){
+  const prev=S.seasons[S.seasons.length-2],cur=S.seasons[S.seasons.length-1];
+  if(!prev||M.some(m=>seasonOf(m)===cur.id))return;
+  S.seasons.pop();delete prev.closed;delete prev.closedAt;S.curSeason=prev.id;viewSeason=prev.id;save();renderAll();toast(prev.name+' reopened');
+}
 /* ---------- contextual menu ---------- */
 function openPanel(id,title){
   if(!$('modal').hidden)closeModal();
@@ -1215,14 +1264,18 @@ $('menubtn').onclick=()=>{
   if(tab==='match')it.push(['sheet','Share team sheet',''],['bc','Broadcast view','']);
   if(tab==='match'&&S.live)it.push(['discard','Discard this match','Nothing is saved',1]);
   if(tab==='stats')it.push(['add','Add a past result','For games not run in the app']);
+  const curS=S.seasons.find(x=>x.id===S.curSeason),prevS=S.seasons[S.seasons.length-2];
+  if(tab==='stats')it.push(['rename','Rename season',curS.name]);
+  if(tab==='stats'&&prevS&&!M.some(m=>seasonOf(m)===S.curSeason))it.push(['reopen','Reopen '+prevS.name,'Undo closing the last season']);
   if(tab==='stats'&&M.length)it.push(['statimg','Share stats image',''],['expr','Export results','Spreadsheet (CSV)'],['expp','Export player stats','Spreadsheet (CSV)']);
+  if(tab==='stats')it.push(['close','Close season',`End ${curS.name} and start the next`,1]);
   modal(`<h3>${tab==='lineup'?'Line-up':tab==='match'?'Match':'Stats'} options</h3><div class="menu">${it.map(([k,l,sub,d])=>`<button type="button" data-m="${k}" class="${d?'danger':''}"><span>${l}</span>${sub?`<small>${esc(sub)}</small>`:''}</button>`).join('')}</div>
     <p class="menufoot"><i></i>${esc($('sync').textContent)}</p>`,()=>{
     $('sheet').querySelector('.menu').addEventListener('click',e=>{const b=e.target.closest('[data-m]');if(!b)return;const k=b.dataset.m;closeModal();
       ({fmt:()=>openPanel('fmtcard','Team size and formation'),settings:()=>openPanel('setcard','Team settings'),sheet:shareSheet,bc:openBC,clear:()=>$('clear').click(),
         discard:()=>{const d=document.querySelector('[data-a="discard"]');d&&d.click()},add:()=>matchForm(null),
-        statimg:()=>shareImage('Season stats',drawStats,statsText(),slug(S.team+' season stats '+new Date().toISOString().slice(0,10))+'.png'),
-        expr:()=>exportCSV('results'),expp:()=>exportCSV('players')})[k]();
+        statimg:()=>shareImage('Season stats',drawStats,statsText(),slug(S.team+' '+seasonName(VS())+' stats')+'.png'),
+        expr:()=>exportCSV('results'),expp:()=>exportCSV('players'),close:closeSeason,rename:renameSeason,reopen:reopenSeason})[k]();
     });
   });
 };
