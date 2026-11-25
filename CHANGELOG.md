@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **2.4** (current) | 25 Nov 2026 | Only coaches on the list can sign in: anyone else's account is removed and they're taken to the parents view | [v2.4](https://bezoon5.github.io/KnowleJackals/versions/v2.4/) |
+| **2.5** (current) | 25 Nov 2026 | Fonts are now stored with the app instead of loading from Google Fonts, so visitors' details aren't sent to Google for them | [v2.5](https://bezoon5.github.io/KnowleJackals/versions/v2.5/) |
+| 2.4 | 25 Nov 2026 | Only coaches on the list can sign in: anyone else's account is removed and they're taken to the parents view | [v2.4](https://bezoon5.github.io/KnowleJackals/versions/v2.4/) |
 | 2.3 | 25 Nov 2026 | Parents view locked down: fixture fields read-only, no view-only bar, no ••• menu; tap the crest to return to the home screen | [v2.3](https://bezoon5.github.io/KnowleJackals/versions/v2.3/) |
 | 2.2 | 25 Nov 2026 | Club home screen with Coach log in and Parents & players buttons; parents get a clean view-only app; coaches sign in once | [v2.2](https://bezoon5.github.io/KnowleJackals/versions/v2.2/) |
 | 2.1 | 25 Nov 2026 | Coaches list is only visible to signed-in coaches | [v2.1](https://bezoon5.github.io/KnowleJackals/versions/v2.1/) |
