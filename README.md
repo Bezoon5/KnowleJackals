@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **2.2** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **2.3** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -13,8 +13,8 @@ A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share 
 ## Home screen
 The link opens on the club home screen, showing the crest, the next fixture and the last result.
 - **Coach log in:** sign in once on each phone. After that the phone goes straight into the app.
-- **Parents & players:** no sign-in needed. It opens the app view-only, with the editing buttons hidden. The phone remembers the choice next time.
-- **••• → Home screen** goes back to it at any time.
+- **Parents & players:** no sign-in needed. It opens a locked, view-only app: the fixture can't be changed, the editing buttons and ••• menu are hidden, and only Team sheet, Broadcast, player cards and the stats image are available. The phone remembers the choice next time.
+- **Back to the home screen:** coaches use **••• → Home screen**; parents tap the crest at the top.
 
 ## The three tabs
 
