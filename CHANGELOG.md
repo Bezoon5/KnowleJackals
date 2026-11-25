@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **2.1** (current) | 25 Nov 2026 | Coaches list is only visible to signed-in coaches | [v2.1](https://bezoon5.github.io/KnowleJackals/versions/v2.1/) |
+| **2.2** (current) | 25 Nov 2026 | Club home screen with Coach log in and Parents & players buttons; parents get a clean view-only app; coaches sign in once | [v2.2](https://bezoon5.github.io/KnowleJackals/versions/v2.2/) |
+| 2.1 | 25 Nov 2026 | Coaches list is only visible to signed-in coaches | [v2.1](https://bezoon5.github.io/KnowleJackals/versions/v2.1/) |
 | 2.0 | 25 Nov 2026 | Shared database (Firebase): every phone sees the same squad, live score and results. Coaches sign in to edit; everyone else can view. Coaches list managed in Team settings | [v2.0](https://bezoon5.github.io/KnowleJackals/versions/v2.0/) |
 | 1.12 | 25 Nov 2026 | Captain can be set on past results; times captain on player cards and in the player export | [v1.12](https://bezoon5.github.io/KnowleJackals/versions/v1.12/) |
 | 1.11 | 25 Nov 2026 | Sideways broadcast view redesigned as a TV-style team graphic: red side band, pitch in perspective with shirts and name plates, side panel with crest, fixture, substitutes and live score | [v1.11](https://bezoon5.github.io/KnowleJackals/versions/v1.11/) |
