@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.2** (current) | 26 Nov 2026 | Arrival time fills in 30 minutes before kick-off for every match (home and away); kick-off has its own line in the WhatsApp team sheet message | [v3.2](https://bezoon5.github.io/KnowleJackals/versions/v3.2/) |
+| **3.3** (current) | 26 Nov 2026 | Tap the captain again to remove the armband; League and Cup filters on the stats page switch on and off independently (none, one or both) | [v3.3](https://bezoon5.github.io/KnowleJackals/versions/v3.3/) |
+| 3.2 | 26 Nov 2026 | Arrival time fills in 30 minutes before kick-off for every match (home and away); kick-off has its own line in the WhatsApp team sheet message | [v3.2](https://bezoon5.github.io/KnowleJackals/versions/v3.2/) |
 | 3.1 | 26 Nov 2026 | Sideways broadcast shows the full pitch: both halves equal with markings at both ends; one Share image + details button sends the picture and match details together | [v3.1](https://bezoon5.github.io/KnowleJackals/versions/v3.1/) |
 | 3.0 | 26 Nov 2026 | Captain count column in player stats; green pitch on the sideways broadcast that fits every screen; coach names and a main coach in Team settings (Arron Cox); Matt added as third coach | [v3.0](https://bezoon5.github.io/KnowleJackals/versions/v3.0/) |
 | 2.9 | 25 Nov 2026 | Sideways broadcast: goalkeeper at the bottom and striker at the top (pitch turned round), players revealed 0.4s apart, substitutes and unavailable players listed one per line | [v2.9](https://bezoon5.github.io/KnowleJackals/versions/v2.9/) |
