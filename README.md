@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **2.4** (25 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **3.3** (26 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -19,13 +19,13 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 ## The three tabs
 
 ### Line-up
-- **Next fixture:** opposition, date, **Home / Away** and **League / Cup**. Home games fill in kick-off 10:30, arrive 10:00 and West Warwickshire Sports Complex automatically. Away games ask for location, kick-off and arrival time.
+- **Next fixture:** opposition, date, **Home / Away** and **League / Cup**. Home games fill in kick-off 10:30, arrive 10:00 and West Warwickshire Sports Complex automatically. Away games ask for location, kick-off and arrival time. For any match, entering a kick-off fills in arrival 30 minutes earlier (unless you've typed your own).
 - **Pitch:** drag players into position, or tap a sub to fill the next spot. Tap two players to swap them. Drag a player back to the bench to take them off.
-- **Squad:** add or remove players and mark the **Captain**, **Goalkeeper** (green shirt), **Injured** 🩹 or **Away** ✈️. Unavailable players are left out of the line-up and listed on the team sheet.
-- **Team sheet:** a WhatsApp-ready image and text with the fixture, line-up, subs and who's unavailable.
+- **Squad:** add or remove players and mark the **Captain** (tap the C again to remove it), **Goalkeeper** (green shirt), **Injured** 🩹 or **Away** ✈️. Unavailable players are left out of the line-up and listed on the team sheet. Renaming a player or changing a shirt number also updates past results.
+- **Team sheet:** a WhatsApp-ready image with the fixture, line-up, subs and who's unavailable. **Share image + details** sends the picture with the match details as its caption in one WhatsApp message (on a laptop it saves the image and copies the details).
 - **Broadcast:** a full-screen TV-style line-up graphic.
   - **Upright** (phones): pitch and list.
-  - **Sideways** (tablets, TVs, phones turned round): red side band, pitch in perspective, and a side panel with crest, fixture, substitutes and live score. Full screen is available.
+  - **Sideways** (tablets, TVs, laptops, phones turned round): red side band, a full green pitch in perspective with the keeper at the bottom, players revealed one by one (0.4s apart), and a side panel with crest, fixture, substitutes, unavailable players and live score. Full screen is available.
 
 ### Match
 - **Clock:** Kick off, Pause, Half-time and Full time. The second half restarts at the half mark.
@@ -36,9 +36,9 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Live score bar:** during a game, a live score bar stays at the top of the other tabs.
 
 ### Stats
-- **Season and filter:** choose the **season** (or All seasons), and tick **League**, **Cup** or both.
+- **Season and filter:** choose the **season** (or All seasons). **League** and **Cup** switch on and off independently: both, either, or neither.
 - **Team stats:** played, won, drawn, lost, goals for and against, goal difference, clean sheets, form and win rate.
-- **Player stats:** appearances, starts, goals, assists, goal involvements (GI) and player of the match. Tap a player for their **player card** image.
+- **Player stats:** appearances, starts, goals, assists, goal involvements (GI), player of the match and games as captain (Capt). Tap a player for their **player card** image.
 - **Goalkeeper:** games in goal, clean sheets, goals conceded and record.
 - **Results:** every match with scorers, assists and who played. You can **Share summary**, **Edit** or **Delete** each one.
 - **Share image:** the whole season's stats as one picture.
@@ -57,7 +57,7 @@ At the end of the season, use **••• → Close season** on the Stats tab. N
 - **Shared database:** the app saves to the club's Firebase database, so every phone sees the same squad, live score and results within a second or two. It keeps working without signal and catches up when the phone is back online.
 - **Who can change things:** anyone with the link can **view**. Coaches tap **Coach sign in** (email and password, or Google) to make changes. The first time, choose **Create account** and tap the confirmation link Firebase emails you.
 - **Coaches only:** if someone who isn't on the coaches list signs in, the app removes that account and opens the parents view. For extra safety, turn off new sign-ups in Firebase (**Authentication → Settings → User actions → Enable create (sign-up)**) once every coach has an account.
-- **Coaches list:** the main coach adds or removes coaches in **••• → Team settings → Coaches who can make changes**. The database's security rules (`firestore.rules` in this repo) enforce the same list.
+- **Coaches list:** the admin (beswick1985@yahoo.com) adds or removes coaches in **••• → Team settings → Coaches who can make changes**, can name each coach (✎) and choose the **Main coach** (Arron Cox). Coaches: beswick1985@yahoo.com (admin), arron7119@hotmail.co.uk (Arron Cox, main coach), matthewfoyle@hotmail.co.uk. The database's security rules (`firestore.rules` in this repo) enforce the same list.
 - **The Claude version** keeps its own separate copy in the owner's Claude account.
 - **Backups:** use **Back up all data** now and then, and always before closing a season.
 
@@ -73,3 +73,5 @@ Every version from 1.3 onwards has its own link in [CHANGELOG.md](CHANGELOG.md).
 | `versions/` | A working copy of each earlier version |
 | `CHANGELOG.md` | Version history with links |
 | `firestore.rules` | Security rules pasted into Firebase (who can read and write) |
+| `fonts/` | Barlow fonts stored with the app (no Google Fonts), with their open licence |
+| `RECOVERY.md` | How to get everything back if something goes wrong |
