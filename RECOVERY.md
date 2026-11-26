@@ -38,7 +38,7 @@ The zip includes `_recovery/data-backup-2026-11-25.json` (squad with shirt numbe
 
 ## 4. The Firebase project is lost (rebuild from scratch)
 1. https://console.firebase.google.com → **Add project** (free Spark plan is enough).
-2. **Build → Firestore Database → Create database** (production mode, region europe-west2 London).
+2. **Build → Firestore Database → Create database** (production mode; any region, e.g. europe-west2 London).
 3. **Firestore → Rules:** paste the contents of `firestore.rules` and **Publish**. The admin email is written in the rules (`beswick1985@yahoo.com`).
 4. **Build → Authentication → Get started:** enable **Email/Password** and **Google**. Under **Settings → Authorised domains** make sure `bezoon5.github.io` is listed.
 5. **Project settings → Your apps → Web app (</>)**: copy the `firebaseConfig` and replace `FB_CONFIG` near the top of the script in `index.html`. (This config is safe to be public; the rules do the protecting.)
