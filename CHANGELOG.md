@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.0** (current) | 26 Nov 2026 | Captain count column in player stats; green pitch on the sideways broadcast that fits every screen; coach names and a main coach in Team settings (Arron Cox); Matt added as third coach | [v3.0](https://bezoon5.github.io/KnowleJackals/versions/v3.0/) |
+| **3.1** (current) | 26 Nov 2026 | Sideways broadcast shows the full pitch: both halves equal with markings at both ends; one Share image + details button sends the picture and match details together | [v3.1](https://bezoon5.github.io/KnowleJackals/versions/v3.1/) |
+| 3.0 | 26 Nov 2026 | Captain count column in player stats; green pitch on the sideways broadcast that fits every screen; coach names and a main coach in Team settings (Arron Cox); Matt added as third coach | [v3.0](https://bezoon5.github.io/KnowleJackals/versions/v3.0/) |
 | 2.9 | 25 Nov 2026 | Sideways broadcast: goalkeeper at the bottom and striker at the top (pitch turned round), players revealed 0.4s apart, substitutes and unavailable players listed one per line | [v2.9](https://bezoon5.github.io/KnowleJackals/versions/v2.9/) |
 | 2.8 | 25 Nov 2026 | Broadcast view reveals players more slowly (0.25s each, subs after the last player); changing a shirt number also updates saved results | [v2.8](https://bezoon5.github.io/KnowleJackals/versions/v2.8/) |
 | 2.7 | 25 Nov 2026 | Renaming a player in the squad also renames them in every saved result (scorers, assists, line-ups, player of the match, exports) | [v2.7](https://bezoon5.github.io/KnowleJackals/versions/v2.7/) |
