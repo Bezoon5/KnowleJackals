@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **4.1** (current) | 27 Nov 2026 | "New version available — tap to update" banner: phones check for a newer release when opened and every few minutes, and update with one tap | [v4.1](https://bezoon5.github.io/KnowleJackals/versions/v4.1/) |
+| **4.2** (current) | 27 Nov 2026 | Stats tab: Head-to-head now below Results, and opponent names show on phones (they were hidden) | [v4.2](https://bezoon5.github.io/KnowleJackals/versions/v4.2/) |
+| 4.1 | 27 Nov 2026 | "New version available — tap to update" banner: phones check for a newer release when opened and every few minutes, and update with one tap | [v4.1](https://bezoon5.github.io/KnowleJackals/versions/v4.1/) |
 | 4.0 | 27 Nov 2026 | **Version 4.** Everything from 3.x in one release: Line-up (Clear / Share / Broadcast, even fixture box, directions, head-to-head), Match (big scoreboard, goal celebration, milestones), Stats (captain column, head-to-head table, independent League/Cup filters), Table tab (FA Full-Time link), locked-down parents view, faster loading and no Google Fonts | [v4.0](https://bezoon5.github.io/KnowleJackals/versions/v4.0/) |
 | 3.13 | 27 Nov 2026 | New: Big scoreboard (Match tab), Directions button and head-to-head record (Next fixture), head-to-head table (Stats), milestones (goal celebration, results, match summary, player cards), goal celebration with confetti on every phone | [v3.13](https://bezoon5.github.io/KnowleJackals/versions/v3.13/) |
 | 3.12 | 27 Nov 2026 | Code review tidy-up: removed leftover code from the old sideways broadcast and the switched-off table-code feature (6 KB smaller); ••• menu on the Table tab now titled correctly; menu labels escaped. No visible changes otherwise | [v3.12](https://bezoon5.github.io/KnowleJackals/versions/v3.12/) |

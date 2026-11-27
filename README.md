@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **4.1** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **4.2** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -50,9 +50,9 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Team stats:** played, won, drawn, lost, goals for and against, goal difference, clean sheets, form and win rate.
 - **Player stats:** appearances, starts, goals, assists, goal involvements (GI), player of the match and games as captain (Capt). Tap a player for their **player card** image.
 - **Goalkeeper:** games in goal, clean sheets, goals conceded and record.
-- **Head-to-head:** your record against every opponent.
 - **Milestones:** first goal, 5th/10th/15th… goal, 5th/10th… assist, 10th/25th/50th appearance, first/5th/10th… clean sheet and 3rd/5th/10th player of the match, counted across all seasons. They appear in the goal celebration, under each result, on the match summary image and on player cards.
 - **Results:** every match with scorers, assists and who played. You can **Share summary**, **Edit** or **Delete** each one.
+- **Head-to-head** (below the results): your record against every opponent, by team name.
 - **Share image:** the whole season's stats as one picture.
 
 ### Table
