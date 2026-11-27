@@ -1,6 +1,6 @@
 # Knowle Jackals Matchday: recovery guide
 
-Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **3.13** (27 Nov 2026).
+Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **4.0** (27 Nov 2026).
 
 ## What's where
 
@@ -34,7 +34,7 @@ Without git, the zip's folder is a ready-to-upload copy: upload every file (keep
 1. Open the app, sign in as a coach (admin).
 2. **••• → Restore from a backup** and choose the newest backup `.json` file.
 
-The zip includes `_recovery/data-backup-2026-11-25.json` (squad with shirt numbers, 11 results to 22 Nov 2026). It's older than your live data, so **make a fresh backup regularly** with **••• → Back up all data**, and always before closing a season. Backup files contain children's names: keep them private, never upload them to GitHub.
+The zip includes `_recovery/data-backup-2026-11-27.json` (squad with shirt numbers, full opposition names, 11 results to 22 Nov 2026). It's older than your live data, so **make a fresh backup regularly** with **••• → Back up all data**, and always before closing a season. Backup files contain children's names: keep them private, never upload them to GitHub.
 
 ## 4. The Firebase project is lost (rebuild from scratch)
 1. https://console.firebase.google.com → **Add project** (free Spark plan is enough).
