@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **4.5** (current) | 27 Nov 2026 | **Offline mode:** the app opens with no signal (last copy kept on the phone). **Match alerts** ready: Get match alerts button, iPhone home-screen guide, alert choices; notifications for kick-off, goals, half-time, second half and full time once the one-time setup in PUSH-SETUP.md is done | [v4.5](https://bezoon5.github.io/KnowleJackals/versions/v4.5/) |
+| **4.6** (current) | 27 Nov 2026 | Match alerts switched on: Web Push key added, so parents now see the Get match alerts button. Notifications arrive once the server part is deployed (PUSH-SETUP.md step 4) | [v4.6](https://bezoon5.github.io/KnowleJackals/versions/v4.6/) |
+| 4.5 | 27 Nov 2026 | **Offline mode:** the app opens with no signal (last copy kept on the phone). **Match alerts** ready: Get match alerts button, iPhone home-screen guide, alert choices; notifications for kick-off, goals, half-time, second half and full time once the one-time setup in PUSH-SETUP.md is done | [v4.5](https://bezoon5.github.io/KnowleJackals/versions/v4.5/) |
 | 4.4 | 27 Nov 2026 | Referee's whistle: one blast at kick-off, two at half-time, one for the second half, three at full time (on/off per phone in the Match ••• menu) | [v4.4](https://bezoon5.github.io/KnowleJackals/versions/v4.4/) |
 | 4.3 | 27 Nov 2026 | Second half always starts the clock at the half mark (e.g. 30:00), even if Half-time was pressed late | [v4.3](https://bezoon5.github.io/KnowleJackals/versions/v4.3/) |
 | 4.2 | 27 Nov 2026 | Stats tab: Head-to-head now below Results, and opponent names show on phones (they were hidden) | [v4.2](https://bezoon5.github.io/KnowleJackals/versions/v4.2/) |

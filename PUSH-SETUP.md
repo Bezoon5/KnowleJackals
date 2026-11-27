@@ -7,12 +7,16 @@ This turns on lock-screen notifications for parents (kick-off, goals, half-time,
 2. Bottom left, click **Upgrade** (next to "Spark") → choose **Blaze** → add a card.
 3. When asked, set a **budget alert of £1**. At one team's size this should stay at £0: the free allowance covers millions of function runs and notifications a month.
 
-## 2. Create the notification key
+## 2. Create the notification key ✅ done 27 Nov 2026
+Key created and added to the app in v4.6. Only repeat this if the Firebase project is rebuilt.
+
 1. Firebase → ⚙️ **Project settings** → **Cloud Messaging** tab.
 2. Scroll to **Web configuration → Web Push certificates** → **Generate key pair**.
 3. Copy the long **Key pair** text (starts with "B…") and send it to Claude. It's a public key, safe to share.
 
-## 3. Find the database location
+## 3. Find the database location ✅ done: europe-west2 (London)
+Already set in `functions/.env`. Only repeat this if the Firebase project is rebuilt.
+
 Firebase → **Firestore Database** → the **Data** tab shows the location near the top (or ⚙️ **Project settings → General → Default GCP resource location**). It looks like `europe-west2`, `eur3` or `nam5`. Send it to Claude so the alert code runs in the same place.
 
 ## 4. Install the alert code (from your browser, nothing to install)
