@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **4.3** (current) | 27 Nov 2026 | Second half always starts the clock at the half mark (e.g. 30:00), even if Half-time was pressed late | [v4.3](https://bezoon5.github.io/KnowleJackals/versions/v4.3/) |
+| **4.4** (current) | 27 Nov 2026 | Referee's whistle: one blast at kick-off, two at half-time, one for the second half, three at full time (on/off per phone in the Match ••• menu) | [v4.4](https://bezoon5.github.io/KnowleJackals/versions/v4.4/) |
+| 4.3 | 27 Nov 2026 | Second half always starts the clock at the half mark (e.g. 30:00), even if Half-time was pressed late | [v4.3](https://bezoon5.github.io/KnowleJackals/versions/v4.3/) |
 | 4.2 | 27 Nov 2026 | Stats tab: Head-to-head now below Results, and opponent names show on phones (they were hidden) | [v4.2](https://bezoon5.github.io/KnowleJackals/versions/v4.2/) |
 | 4.1 | 27 Nov 2026 | "New version available — tap to update" banner: phones check for a newer release when opened and every few minutes, and update with one tap | [v4.1](https://bezoon5.github.io/KnowleJackals/versions/v4.1/) |
 | 4.0 | 27 Nov 2026 | **Version 4.** Everything from 3.x in one release: Line-up (Clear / Share / Broadcast, even fixture box, directions, head-to-head), Match (big scoreboard, goal celebration, milestones), Stats (captain column, head-to-head table, independent League/Cup filters), Table tab (FA Full-Time link), locked-down parents view, faster loading and no Google Fonts | [v4.0](https://bezoon5.github.io/KnowleJackals/versions/v4.0/) |
