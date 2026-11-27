@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.9** (current) | 27 Nov 2026 | Parents & players view fully locked: always view-only even on a phone signed in as a coach; no Clear, Share or Manage squad; fixture, match controls and results can't be changed | [v3.9](https://bezoon5.github.io/KnowleJackals/versions/v3.9/) |
+| **3.10** (current) | 27 Nov 2026 | Fix: parents view showed the match date twice, overlapping; Home and League labels now fill their half in the parents view | [v3.10](https://bezoon5.github.io/KnowleJackals/versions/v3.10/) |
+| 3.9 | 27 Nov 2026 | Parents & players view fully locked: always view-only even on a phone signed in as a coach; no Clear, Share or Manage squad; fixture, match controls and results can't be changed | [v3.9](https://bezoon5.github.io/KnowleJackals/versions/v3.9/) |
 | 3.8 | 27 Nov 2026 | New **Table** tab: the league table from FA Full-Time (paste the FA's table code once, or open the FA page); Next fixture box laid out in an even two-column grid with matching box sizes | [v3.8](https://bezoon5.github.io/KnowleJackals/versions/v3.8/) |
 | 3.7 | 27 Nov 2026 | Fix: the ••• menu could say "Shared save not reachable yet" even when the phone was connected and sharing changes; version date corrected | [v3.7](https://bezoon5.github.io/KnowleJackals/versions/v3.7/) |
 | 3.6 | 27 Nov 2026 | Clear pitch removed from the ••• menu and Team size panel (the Clear button on the Line-up screen does this); README brought up to date | [v3.6](https://bezoon5.github.io/KnowleJackals/versions/v3.6/) |
