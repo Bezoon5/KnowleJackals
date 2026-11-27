@@ -26,5 +26,14 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isCoach();
     }
+    // match alerts: a phone can register, change or remove its own alert settings; nobody can read the list
+    match /subs/{token} {
+      allow create, update: if request.resource.data.keys().hasOnly(['token', 'prefs', 'at', 'platform'])
+        && request.resource.data.token == token && token.size() < 400
+        && request.resource.data.prefs is map
+        && request.resource.data.prefs.keys().hasOnly(['ko', 'goals']);
+      allow delete: if true;
+      allow read: if false;
+    }
   }
 }

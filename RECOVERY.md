@@ -1,6 +1,6 @@
 # Knowle Jackals Matchday: recovery guide
 
-Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **4.4** (27 Nov 2026).
+Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **4.5** (27 Nov 2026).
 
 ## What's where
 
@@ -49,12 +49,16 @@ The admin email appears in two places and both must match:
 - `firestore.rules` → `isOwner()` (then **Publish** in Firebase)
 - `index.html` → `OWNER_EMAIL`
 
+## 6. Match alerts stop working
+Repeat step 4 of `PUSH-SETUP.md` (deploy from Cloud Shell). If the Firebase project was rebuilt, also repeat steps 1–3 and put the new Web Push key in `VAPID_KEY` in `index.html`.
+
 ## Key settings in `index.html`
 Search for these near the top of the script:
 - `APP_VERSION`: version shown in the ••• menu
 - `FB_CONFIG`: Firebase connection
 - `OWNER_EMAIL`, `START_COACHES`, `COACH_UPDATE`: admin, starting coaches, main coach
 - `REVEAL`: broadcast reveal speed (400 = 0.4 seconds per player)
+- `VAPID_KEY`: Web Push public key for match alerts (the button stays hidden while it's empty)
 
 ## Developer test tools (in the zip only)
 `_recovery/dev-tests/` has the Firebase stand-in and the regression test used during development (Python + Playwright). They use the original working folders, so the paths at the top need changing before use.

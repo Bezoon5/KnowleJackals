@@ -1,0 +1,4 @@
+{
+  "functions": [{ "source": "functions", "codebase": "default", "runtime": "nodejs20", "ignore": ["test-*.js", "node_modules"] }],
+  "firestore": { "rules": "firestore.rules" }
+}

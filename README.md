@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **4.4** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **4.5** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -76,6 +76,15 @@ At the end of the season, use **••• → Close season** on the Stats tab. N
 - **Coaches list:** the admin adds or removes coaches in **••• → Team settings**, can give each coach a name (✎) and choose the **Main coach**. The database's security rules (`firestore.rules`) enforce the same list.
 - **Backups:** use **Back up all data** now and then, and always before closing a season.
 
+## Offline mode
+After the first visit, the app keeps a copy on the phone, so it opens even with no signal at the pitch. Changes made offline save to the phone and sync to the shared database when the signal comes back. When online, the newest version always loads.
+
+## Match alerts (lock-screen notifications)
+- **Parents and coaches:** Match tab → **Get match alerts** → choose *Kick-off, half-time and full time* and/or *Goals* → **Turn on alerts** → **Allow**. Change or turn off the same way.
+- **iPhone:** alerts only work when the app is opened from the home screen (Safari → Share → Add to Home Screen; iOS 16.4+). The app shows these steps.
+- **Alerts sent:** ⚽ Kick-off · ⚽ GOAL! (scorer, minute, assist) · opposition goals · ⏸ Half-time · ▶️ Second half · 🏁 Full time (score, scorers, player of the match).
+- **How it works:** a small Firebase function (`functions/`) watches the live match and sends the alerts through Firebase Cloud Messaging. One-time setup: see **PUSH-SETUP.md**.
+
 ## Updates
 When a new version is published, phones show a red **New version available — tap to update** banner (checked when the app is opened and every few minutes). Tap it to load the new version; your data isn't affected.
 
@@ -93,3 +102,7 @@ Every version from 1.3 onwards has its own link in [CHANGELOG.md](CHANGELOG.md).
 | `firestore.rules` | Security rules pasted into Firebase (who can read and write) |
 | `fonts/` | Barlow fonts stored with the app (no Google Fonts), with their open licence |
 | `RECOVERY.md` | How to get everything back if something goes wrong |
+| `sw.js` | Service worker: offline mode and showing match alerts |
+| `functions/` | Firebase function that sends match alerts (`notify.js` decides what to send; `test-notify.js` tests it) |
+| `firebase.json`, `.firebaserc` | Settings for deploying the alert function and security rules |
+| `PUSH-SETUP.md` | One-time setup for match alerts |
