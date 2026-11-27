@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **3.4** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **3.5** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -25,7 +25,7 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Clear / Share / Broadcast** (buttons under the fixture): **Clear** takes everyone off the pitch (**••• → Undo last change** puts them back); **Share** offers **Share image + details** or **Save image** straight away.
 - **Team sheet:** a WhatsApp-ready image with the fixture, line-up, subs and who's unavailable. **Share image + details** sends the picture with the match details as its caption in one WhatsApp message (on a laptop it saves the image and copies the details).
 - **Broadcast:** a full-screen TV-style line-up graphic.
-  - **Upright** (phones): pitch and list.
+  - **Upright** (phones): pitch and list, with **Replay** and **Back** buttons. Turn the phone sideways for the sideways view.
   - **Sideways** (tablets, TVs, laptops, phones turned round): red side band, a full green pitch in perspective with the keeper at the bottom, players revealed one by one (0.4s apart), and a side panel with crest, fixture, substitutes, unavailable players and live score. Full screen is available.
 
 ### Match
