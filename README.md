@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **3.12** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **3.13** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -29,6 +29,8 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Buttons under the fixture: Clear, Share, Broadcast**
   - **Clear** takes everyone off the pitch, ready to pick a new team. **••• → Undo last change** puts them back.
   - **Share** offers **Share image + details**, **Save image** or **Preview**. The team sheet image shows the fixture, line-up, subs and who's unavailable. **Share image + details** sends the picture with the match details (date, kick-off, arrival and location, each on its own line) as one WhatsApp message. On a laptop it saves the image and copies the details to paste as the caption.
+- **Directions** opens the venue in Apple Maps (iPhone) or Google Maps, for home and away games.
+- **Head-to-head:** your record against the next opponent (played, won, drawn, lost, goals) and the last result, shown under the fixture.
   - **Broadcast** opens a full-screen TV-style line-up graphic:
     - **Upright** (phones): pitch and list, with **Replay** and **Back** buttons. Turn the phone sideways for the sideways view.
     - **Sideways** (tablets, TVs, laptops, phones turned round): red side band, a full green pitch in perspective with the keeper at the bottom, players revealed one by one (0.4s apart), and a side panel with crest, fixture, substitutes, unavailable players and live score. Buttons: Upright, Replay, Full screen and Share.
@@ -40,12 +42,16 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Player of the match:** chosen at full time before the result is saved, then a **match summary image** is ready to share.
 - **Subs:** rolling subs are made on the Line-up tab. If you want each sub logged with a minute, turn on **Track substitutions** in the ••• menu.
 - **Live score bar:** during a game, a live score bar stays at the top of the other tabs.
+- **Big scoreboard:** a full-screen score, clock and last scorer you can read from the touchline. The screen stays on while it's open. Parents can use it too.
+- **Goal celebration:** when Knowle score, every phone watching shows GOAL! with the scorer (and a milestone if there is one), confetti and a buzz on Android. Tap to close.
 
 ### Stats
 - **Season and filter:** choose the **season** (or All seasons). **League** and **Cup** switch on and off independently: both, either, or neither.
 - **Team stats:** played, won, drawn, lost, goals for and against, goal difference, clean sheets, form and win rate.
 - **Player stats:** appearances, starts, goals, assists, goal involvements (GI), player of the match and games as captain (Capt). Tap a player for their **player card** image.
 - **Goalkeeper:** games in goal, clean sheets, goals conceded and record.
+- **Head-to-head:** your record against every opponent.
+- **Milestones:** first goal, 5th/10th/15th… goal, 5th/10th… assist, 10th/25th/50th appearance, first/5th/10th… clean sheet and 3rd/5th/10th player of the match, counted across all seasons. They appear in the goal celebration, under each result, on the match summary image and on player cards.
 - **Results:** every match with scorers, assists and who played. You can **Share summary**, **Edit** or **Delete** each one.
 - **Share image:** the whole season's stats as one picture.
 

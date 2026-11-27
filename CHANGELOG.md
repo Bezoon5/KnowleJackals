@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.12** (current) | 27 Nov 2026 | Code review tidy-up: removed leftover code from the old sideways broadcast and the switched-off table-code feature (6 KB smaller); ••• menu on the Table tab now titled correctly; menu labels escaped. No visible changes otherwise | [v3.12](https://bezoon5.github.io/KnowleJackals/versions/v3.12/) |
+| **3.13** (current) | 27 Nov 2026 | New: Big scoreboard (Match tab), Directions button and head-to-head record (Next fixture), head-to-head table (Stats), milestones (goal celebration, results, match summary, player cards), goal celebration with confetti on every phone | [v3.13](https://bezoon5.github.io/KnowleJackals/versions/v3.13/) |
+| 3.12 | 27 Nov 2026 | Code review tidy-up: removed leftover code from the old sideways broadcast and the switched-off table-code feature (6 KB smaller); ••• menu on the Table tab now titled correctly; menu labels escaped. No visible changes otherwise | [v3.12](https://bezoon5.github.io/KnowleJackals/versions/v3.12/) |
 | 3.11 | 27 Nov 2026 | Table tab simplified to one Open league table button linking to FA Full-Time (table code option removed for now) | [v3.11](https://bezoon5.github.io/KnowleJackals/versions/v3.11/) |
 | 3.10 | 27 Nov 2026 | Fix: parents view showed the match date twice, overlapping; Home and League labels now fill their half in the parents view | [v3.10](https://bezoon5.github.io/KnowleJackals/versions/v3.10/) |
 | 3.9 | 27 Nov 2026 | Parents & players view fully locked: always view-only even on a phone signed in as a coach; no Clear, Share or Manage squad; fixture, match controls and results can't be changed | [v3.9](https://bezoon5.github.io/KnowleJackals/versions/v3.9/) |

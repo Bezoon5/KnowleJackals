@@ -422,6 +422,45 @@ body.viewer .trio{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 @media(max-width:600px){.bcform{margin-left:0;text-align:left}.bug .tm{padding:12px 10px}.bug .tm img{display:none}.bug .sc{padding:0 10px}.goals{grid-template-columns:1fr}
   table{font-size:14px}th,td{padding:8px 5px}th:first-child,td:first-child{display:none}}
+
+/* big scoreboard */
+.bigbtn{display:block;width:100%;max-width:520px;margin:0 auto 14px;min-height:46px;font:800 18px 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.bigsb{position:fixed;inset:0;z-index:97;background:radial-gradient(120% 90% at 50% 0%,#3a0709 0%,#0b0b0c 70%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5vh;padding:4vh 4vw;text-align:center;user-select:none;-webkit-user-select:none}
+.bigsb[hidden]{display:none}
+.bigx{position:absolute;top:max(14px,env(safe-area-inset-top));right:14px;width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.4);color:#fff;font-size:22px}
+.bigteams{display:grid;grid-template-columns:1fr 1fr;gap:4vw;width:100%;max-width:1400px}
+.bigt{display:flex;align-items:center;justify-content:center;gap:2vw;font:800 clamp(26px,min(7vw,9vh),110px)/1 'Barlow Condensed',sans-serif;text-transform:uppercase;min-width:0}
+.bigt span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bigt img{width:clamp(48px,min(12vw,14vh),170px);height:auto;border-radius:50%;background:#fff;box-shadow:0 0 0 4px #fff}
+.bigscore{font:800 clamp(120px,min(38vw,46vh),520px)/.9 'Barlow Condensed',sans-serif;display:flex;gap:3vw;align-items:center;font-variant-numeric:tabular-nums}
+.bigscore i{font-style:normal;color:#D31118}
+.bigclock{font:800 clamp(44px,min(14vw,15vh),200px)/1 'Barlow Condensed',sans-serif;font-variant-numeric:tabular-nums;background:#D31118;padding:.5vh 3vw;border-radius:12px}
+.bighalf{font:800 clamp(18px,min(5vw,5vh),60px) 'Barlow Condensed',sans-serif;text-transform:uppercase;color:rgba(255,255,255,.8);min-height:1em}
+.biglast{font:600 clamp(16px,min(4.4vw,4.4vh),48px) Barlow,sans-serif;color:rgba(255,255,255,.85)}
+@media (orientation:landscape) and (max-height:520px){.bigsb{gap:1vh}.bigscore{font-size:min(30vw,48vh)}}
+/* goal celebration */
+.goalfx{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:rgba(10,0,1,.72);overflow:hidden;cursor:pointer}
+.goalfx[hidden]{display:none}
+.goalfx .fxin{display:grid;gap:10px;text-align:center;color:#fff;padding:20px}
+.goalfx b{font:800 italic clamp(90px,26vw,240px)/.9 'Barlow Condensed',sans-serif;color:#fff;text-shadow:0 6px 0 #D31118,0 10px 30px rgba(0,0,0,.6)}
+.goalfx .fxwho{font:800 clamp(34px,9vw,80px)/1 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.goalfx .fxms{font:800 clamp(22px,6vw,44px)/1.1 'Barlow Condensed',sans-serif;text-transform:uppercase;background:#D31118;padding:6px 14px;border-radius:8px;justify-self:center}
+.goalfx .fxsc{font:600 clamp(16px,4.4vw,26px) Barlow,sans-serif;color:rgba(255,255,255,.85)}
+.goalfx i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;opacity:0}
+.goalfx.go .fxin{animation:fxpop .55s cubic-bezier(.2,1.6,.4,1) both}
+.goalfx.go i{animation:fxfall 2.4s var(--dl) ease-in forwards}
+@keyframes fxpop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes fxfall{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:1;transform:translate(var(--dx),110vh) rotate(var(--r))}}
+@media (prefers-reduced-motion:reduce){.goalfx.go .fxin{animation:none}}
+/* directions and head-to-head */
+#dirrow:not(:empty){margin-top:10px}
+.dirbtn{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;text-decoration:none;font:800 18px 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.dirbtn,.dirbtn:visited{color:#fff}
+#h2h{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,.05);font-size:15px;line-height:1.5}
+#h2h .h2hl{display:block;font:800 13px 'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+#h2h small{color:var(--mut);font-size:13px}#h2h .pill{display:inline-block;padding:0 6px;border-radius:4px;font-weight:700;color:#fff}
+.h2ht{width:100%;border-collapse:collapse}.h2ht th,.h2ht td{padding:7px 6px;text-align:center;border-bottom:1px solid var(--line)}.h2ht th:first-child,.h2ht td:first-child{text-align:left}
+.msl{color:#fff}
 </style>
 </head>
 <body>
@@ -478,6 +517,8 @@ body.viewer .trio{grid-template-columns:repeat(2,minmax(0,1fr))}
       <label class="f">Kick-off<span class="pickbox"><span class="ptxt" data-for="f-ko">Set time</span><input type="time" id="f-ko"></span></label>
       <label class="f">Arrival time<span class="pickbox"><span class="ptxt" data-for="f-meet">Set time</span><input type="time" id="f-meet"></span></label>
     </div>
+    <div id="dirrow"></div>
+    <div id="h2h"></div>
   </details>
   <div class="wrap">
     <section>
@@ -534,6 +575,7 @@ body.viewer .trio{grid-template-columns:repeat(2,minmax(0,1fr))}
 <section class="view" id="v-match" hidden>
   <p class="fixline" id="mfix"></p>
   <div class="bug" id="bug"></div>
+  <button class="btn bigbtn" id="bigbtn" type="button">⛶ Big scoreboard</button>
   <div class="clockrow"><div class="clock" id="clock">00:00</div></div>
   <div class="hbar" id="hbar" aria-hidden="true"><i></i></div>
   <div class="malert" id="malert" hidden></div>
@@ -553,6 +595,8 @@ body.viewer .trio{grid-template-columns:repeat(2,minmax(0,1fr))}
 </section>
 
 <div class="bc" id="bc" hidden></div>
+<div class="bigsb" id="bigsb" hidden></div>
+<div class="goalfx" id="goalfx" hidden aria-live="assertive"></div>
 <div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
 <div id="ghost"></div>
 <div id="toast" role="status"></div>
@@ -560,7 +604,7 @@ body.viewer .trio{grid-template-columns:repeat(2,minmax(0,1fr))}
 
 <script>
 {
-const APP_VERSION='3.12',APP_DATE='27 Nov 2026';
+const APP_VERSION='3.13',APP_DATE='27 Nov 2026';
 const KEY='kj-lineup-v2',MKEY='kj-matches-v1',MAX=20;
 const SHIRT='M30 8 42 4q8 9 16 0l12 4 24 16-10 18-10-6v58H26V36l-10 6L6 24Z';
 const PITCH=`<svg class="lines" viewBox="0 0 64 100" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="60" height="96"/><line x1="2" y1="50" x2="62" y2="50"/><circle cx="32" cy="50" r="7"/><circle class="dot" cx="32" cy="50" r=".6"/><rect x="14" y="2" width="36" height="14"/><rect x="23" y="2" width="18" height="5"/><circle class="dot" cx="32" cy="11" r=".5"/><path d="M27.1 16A7 7 0 0 0 36.9 16"/><rect x="14" y="84" width="36" height="14"/><rect x="23" y="93" width="18" height="5"/><circle class="dot" cx="32" cy="89" r=".5"/><path d="M27.1 84A7 7 0 0 1 36.9 84"/><rect x="28" y=".6" width="8" height="1.4"/><rect x="28" y="98" width="8" height="1.4"/></svg>`;
@@ -695,12 +739,14 @@ function renderSquad(){
 function pickText(){document.querySelectorAll('#fixcard .ptxt').forEach(t=>{const v=$(t.dataset.for).value;t.textContent=v?(t.dataset.for==='f-date'?fmtDate(v,{day:'numeric',month:'short',year:'numeric'}):v):(t.dataset.for==='f-date'?'Pick a date':'Set time');t.classList.toggle('ph',!v)})}
 document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('.pickbox'))pickText()});
 document.addEventListener('click',e=>{const i=e.target.closest&&e.target.closest('.pickbox input');if(i&&i.showPicker&&!document.body.classList.contains('viewer'))try{i.showPicker()}catch(err){}});
+function fixExtras(){const v=fixVenue();$('dirrow').innerHTML=v?`<a class="btn dirbtn" href="${esc(dirURL(v))}" target="_blank" rel="noopener">📍 Directions</a>`:'';$('h2h').innerHTML=h2hLine();$('h2h').hidden=!$('h2h').innerHTML}
 function fillFix(){
   for(const k of ['opp','date','ko','venue','meet']){const el=$('f-'+k);if(el&&document.activeElement!==el)el.value=S.fix[k]||''}
   const f=S.fix,home=f.ha!=='Away';
   $('f-ha').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===(home?'Home':'Away')));
   $('f-comp').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===f.comp));
   $('awayf').hidden=home;$('homeinfo').hidden=!home;pickText();
+  fixExtras();
   $('homeinfo').innerHTML=`<span>Kick-off <b>${esc(S.home.ko||'—')}</b></span><span>Arrive <b>${esc(S.home.meet||'—')}</b></span><span>📍 <b>${esc(S.home.venue||'Not set')}</b></span><button type="button" id="edithome">Change home details</button>`;
 }
 const crestSrc=()=>S.crest&&/^data:image\//.test(S.crest)?S.crest:'crest.png';
@@ -785,7 +831,7 @@ $('f-comp').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if
 $('homeinfo').addEventListener('click',e=>{if(e.target.id==='edithome')openPanel('setcard','Team settings')});
 const minus30=t=>{const m=/^(\d{1,2}):(\d{2})$/.exec(t||'');if(!m)return '';const v=(+m[1]*60+ +m[2]-30+1440)%1440;return String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0')};
 $('f-ko').addEventListener('input',e=>{if(document.body.classList.contains('viewer'))return;const old=S.fix.ko;if(!S.fix.meet||S.fix.meet===minus30(old)){S.fix.meet=minus30(e.target.value);$('f-meet').value=S.fix.meet}});
-for(const k of ['opp','date','ko','venue','meet'])$('f-'+k).addEventListener('input',e=>{if(document.body.classList.contains('viewer')){fillFix();return}S.fix[k]=e.target.value;clearTimeout(fixT);fixT=setTimeout(()=>{save();renderLineup();renderMatch()},400)});
+for(const k of ['opp','date','ko','venue','meet'])$('f-'+k).addEventListener('input',e=>{if(document.body.classList.contains('viewer')){fillFix();return}S.fix[k]=e.target.value;clearTimeout(fixT);fixT=setTimeout(()=>{save();renderLineup();renderMatch();fixExtras()},400)});
 /* a player's new name or shirt number is copied into saved results too (scorers, assists, line-ups, player of the match, keeper, subs) */
 function syncInMatches(id,f){
   if(!canWrite())return;
@@ -831,9 +877,72 @@ function pname(id){const p=byId(id);return p?p.name:'Former player'}
 function fixHTML(){
   const f=S.fix,bits=[`v <b>${esc(oppName())}</b>`,esc(fmtDate(f.date)),f.ko?'KO '+esc(f.ko):'',esc(f.ha),esc(f.comp)].filter(Boolean);
   let h=bits.join(' · ');
-  if(f.venue)h+=` · <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(f.venue)}" target="_blank" rel="noopener">${esc(f.venue)}</a>`;
+  const vv=fixVenue();if(vv)h+=` · <a href="${esc(dirURL(vv))}" target="_blank" rel="noopener">${esc(vv)}</a>`;
   return h;
 }
+/* ---------- directions, head-to-head, milestones ---------- */
+const isIOS=()=>/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const dirURL=q=>isIOS()?`https://maps.apple.com/?daddr=${encodeURIComponent(q)}`:`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(q)}`;
+const fixVenue=()=>(S.fix.ha!=='Away'?(S.home.venue||S.fix.venue):S.fix.venue||'').trim();
+const oppKey=n=>String(n||'').toLowerCase().replace(/\bu\s?\d+s?\b/g,'').replace(/[^a-z0-9]/g,'');
+function h2hRows(list){const g={};list.forEach(m=>{const k=oppKey(m.opp);if(!k)return;const r=g[k]=g[k]||{opp:m.opp,p:0,w:0,d:0,l:0,gf:0,ga:0,last:null};r.p++;r.gf+=m.gf;r.ga+=m.ga;m.gf>m.ga?r.w++:m.gf<m.ga?r.l++:r.d++;if(!r.last||(m.date||'')>(r.last.date||''))r.last=m});return Object.values(g)}
+function h2hLine(){
+  const k=oppKey(S.fix.opp);if(!k)return'';
+  const r=h2hRows(M.filter(m=>oppKey(m.opp)===k))[0];
+  if(!r)return `<span class="h2hl">Head-to-head</span> First meeting with ${esc(S.fix.opp.trim())}`;
+  const L=r.last,res=L.gf>L.ga?'W':L.gf<L.ga?'L':'D';
+  return `<span class="h2hl">Head-to-head</span><b>P${r.p} · W${r.w} D${r.d} L${r.l}</b> · goals ${r.gf}–${r.ga}<br><small>Last time: <span class="pill ${res}">${res} ${L.gf}–${L.ga}</span> ${esc(fmtDate(L.date,{day:'numeric',month:'short',year:'numeric'}))}</small>`;
+}
+const MS={g:[1,5,10,15,20,25,30,40,50,75,100],a:[5,10,15,20,25,30,40,50],apps:[10,25,50,75,100],cs:[1,5,10,15,20,25,30],potm:[3,5,10,15,20]};
+const ord=n=>n+(n%100>=11&&n%100<=13?'th':['th','st','nd','rd'][n%10]||'th');
+function msLabel(k,n){if(n===1)return k==='g'?'first goal':k==='cs'?'first clean sheet':'';return `${ord(n)} ${({g:'goal',a:'assist',apps:'appearance',cs:'clean sheet',potm:'player of the match'})[k]}`}
+function matchCounts(m){const c={};const add=(id,k,n=1)=>{if(!id||id==='og')return;(c[id]=c[id]||{g:0,a:0,apps:0,cs:0,potm:0})[k]+=n};
+  (m.events||[]).forEach(e=>{if(e.t!=='for')return;add(e.scorer&&e.scorer.id,'g');if(!e.pen)add(e.assist&&e.assist.id,'a')});
+  (m.played||[]).forEach(p=>add(p.id,'apps'));if(m.gk&&m.ga===0)add(m.gk.id,'cs');if(m.potm)add(m.potm.id,'potm');return c}
+const chrono=()=>M.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||'')||(a.finishedAt||0)-(b.finishedAt||0));
+/* all-time milestones: {matchId:[{id,name,k,n,label}]} and per player history */
+function milestones(){
+  const tot={},byMatch={},byPlayer={};
+  chrono().forEach(m=>{const c=matchCounts(m);Object.entries(c).forEach(([id,d])=>{const t=tot[id]=tot[id]||{g:0,a:0,apps:0,cs:0,potm:0};
+    for(const k in d){const before=t[k],after=before+d[k];MS[k].forEach(n=>{if(before<n&&after>=n){const nm=((m.played||[]).find(p=>p.id===id)||(m.events||[]).map(e=>e.scorer).find(x=>x&&x.id===id)||{}).name||pname(id);
+      const x={id,name:nm,k,n,label:msLabel(k,n),date:m.date,m:m.id};(byMatch[m.id]=byMatch[m.id]||[]).push(x);(byPlayer[id]=byPlayer[id]||[]).push(x)}});t[k]=after}})});
+  return{byMatch,byPlayer,tot};
+}
+const msText=x=>`${x.name} – ${x.label}`;
+/* goal milestone while the match is live: saved goals plus live goals so far */
+function liveGoalMilestone(ev){if(!ev||ev.scorer==='og')return'';const id=ev.scorer,saved=(milestones().tot[id]||{g:0}).g,L=S.live;
+  const n=saved+L.events.filter(e=>e.t==='for'&&e.scorer===id&&L.events.indexOf(e)<=L.events.indexOf(ev)).length;return MS.g.includes(n)?msLabel('g',n):''}
+/* ---------- goal celebration ---------- */
+let goalSeen=null,fxT;
+function watchGoals(){const L=S.live;if(!L){goalSeen=null;return}const ids=L.events.filter(e=>e.t==='for').map(e=>e.id);
+  if(!goalSeen){goalSeen=new Set(ids);return}const fresh=L.events.filter(e=>e.t==='for'&&!goalSeen.has(e.id));ids.forEach(i=>goalSeen.add(i));if(fresh.length)celebrate(fresh[fresh.length-1])}
+function celebrate(ev){
+  const fx=$('goalfx'),who=ev.scorer==='og'?'Own goal':pname(ev.scorer),ms=liveGoalMilestone(ev),sc=score(S.live.events),calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let conf='';if(!calm)for(let i=0;i<36;i++)conf+=`<i style="left:${Math.round(Math.random()*100)}%;--dl:${(Math.random()*.5).toFixed(2)}s;--dx:${Math.round(Math.random()*160-80)}px;--r:${Math.round(Math.random()*720-360)}deg;background:${i%3?'#D31118':'#fff'}"></i>`;
+  fx.innerHTML=`<div class="fxin"><b>GOAL!</b><span class="fxwho">${esc(who)}</span>${ms?`<span class="fxms">🎉 ${esc(ms)}</span>`:''}<span class="fxsc">${esc(S.short)} ${sc.f}–${sc.a} ${esc(oppName())}</span></div>${conf}`;
+  fx.hidden=false;fx.classList.remove('go');void fx.offsetWidth;fx.classList.add('go');
+  try{navigator.vibrate&&navigator.vibrate([120,60,120,60,300])}catch(e){}
+  clearTimeout(fxT);fxT=setTimeout(()=>{fx.hidden=true},ms?3800:2800);
+}
+document.addEventListener('click',e=>{if(e.target.closest('#goalfx'))$('goalfx').hidden=true});
+/* ---------- big scoreboard ---------- */
+let wake=null;
+function bigHTML(){const L=S.live,sc=L?score(L.events):{f:0,a:0},last=L?L.events.filter(e=>e.t==='for').slice(-1)[0]:null;
+  return `<button class="bigx" type="button" id="bigx" aria-label="Close scoreboard">✕</button>
+  <div class="bigteams"><div class="bigt"><img src="${crestSrc()}" alt=""><span>${esc(S.short)}</span></div><div class="bigt opp"><span>${esc(oppName())}</span></div></div>
+  <div class="bigscore"><span id="bigf">${sc.f}</span><i>–</i><span id="biga">${sc.a}</span></div>
+  <div class="bigclock" id="bigclock">${L?fmtClock(elapsed()):'Not started'}</div><div class="bighalf" id="bighalf">${L?(L.running?(L.half===2?'2nd half':'1st half'):(L.htAt===L.acc&&L.half===2?'Half-time':'Paused')):''}</div>
+  ${last?`<div class="biglast">⚽ ${last.scorer==='og'?'Own goal':esc(pname(last.scorer))} ${last.min}'</div>`:''}`}
+async function openBig(){const b=$('bigsb');b.innerHTML=bigHTML();b.hidden=false;document.body.style.overflow='hidden';
+  try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){}
+  try{if(document.fullscreenEnabled&&!document.fullscreenElement)await b.requestFullscreen()}catch(e){}}
+function closeBig(){$('bigsb').hidden=true;$('bigsb').innerHTML='';if(!bcOpen)document.body.style.overflow='';try{wake&&wake.release()}catch(e){}wake=null;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}}
+function bigTick(){const b=$('bigsb');if(b.hidden)return;const L=S.live;
+  const sc=L?score(L.events):{f:0,a:0};if($('bigf').textContent!=sc.f||$('biga').textContent!=sc.a||(b.querySelector('.biglast')?1:0)!==(L&&L.events.some(e=>e.t==='for')?1:0)){b.innerHTML=bigHTML();return}
+  $('bigclock').textContent=L?fmtClock(elapsed()):'Not started';$('bighalf').textContent=L?(L.running?(L.half===2?'2nd half':'1st half'):(L.htAt===L.acc&&L.half===2?'Half-time':'Paused')):''}
+document.addEventListener('visibilitychange',async()=>{if(!document.hidden&&!$('bigsb').hidden&&navigator.wakeLock&&!wake){try{wake=await navigator.wakeLock.request('screen')}catch(e){}}});
+$('bigbtn').onclick=openBig;
+document.addEventListener('click',e=>{if(e.target.closest('#bigx'))closeBig()});
 function renderMatch(){
   const L=S.live,ev=L?L.events:[],sc=score(ev);
   $('mfix').innerHTML=fixHTML()+(S.fix.opp?'':' · <span>add the fixture on the Line-up tab</span>');
@@ -857,7 +966,7 @@ function renderMatch(){
     ?`<li class="us"><span class="m">${e.min}'</span><span class="who">${e.scorer==='og'?'Own goal':esc(pname(e.scorer))}<small>${e.pen?'Penalty':e.assist?'Assist: '+esc(pname(e.assist)):'No assist'}</small></span><button class="x" data-del="${e.id}" aria-label="Remove goal">×</button></li>`
     :`<li class="them"><span class="m">${e.min}'</span><span class="who">${esc(oppName())} goal</span><button class="x" data-del="${e.id}" aria-label="Remove goal">×</button></li>`).join(''):'<li style="display:block;border:0;background:none;padding:0"><p class="empty">Press Kick off to start the clock. Goals you log here are saved with the result at full time.</p></li>';
   $('livedot').hidden=!L;
-  renderPotm();
+  renderPotm();watchGoals();bigTick();
 }
 let alerted={};
 function tick(){
@@ -875,6 +984,7 @@ function tick(){
   const mb=$('minibar');mb.hidden=!L||tab==='match';
   if(L&&tab!=='match'){const sc=score(L.events);mb.innerHTML=`<span class="lv">Live</span><span class="sc">${sc.f}–${sc.a}</span><span class="nm">${esc(S.short)} v ${esc(oppName())}</span><span class="ck">${fmtClock(elapsed())}${L.running?'':' · paused'} ›</span>`}
   $('clock').innerHTML=fmtClock(elapsed())+(L?`<small>${L.running?(L.half===2?'2nd half':'1st half'):(L.htAt===L.acc&&L.half===2?'Half-time':'Paused')}</small>`:'');
+  bigTick();
   const b=document.querySelector('.bcbar em');if(b&&L)b.textContent=`${S.short} ${score(L.events).f}–${score(L.events).a} · ${fmtClock(elapsed())}`;
   const lb=document.querySelector('.tvlive');if(lb&&L){const sc=score(L.events);lb.innerHTML=`<span>Live</span><b>${sc.f}–${sc.a}</b><i>${fmtClock(elapsed())}</i>`}
 }
@@ -1009,6 +1119,7 @@ function computeStats(){
   Object.values(pl).forEach(r=>{const p=byId(r.id);if(p){r.name=p.name;r.num=p.num}r.ga=r.g+r.a});
   return{t,pl,gks};
 }
+let MSX={};
 function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th,gks){
   const keepers=Object.values(gks).sort((a,b)=>b.games-a.games);
   el.innerHTML=addBtn+`
@@ -1029,14 +1140,16 @@ function renderStatsHTML(el,addBtn,t,rows,gd,res,top,th,gks){
   <p class="note">Apps = appearances (started or came on) · GI = goal involvements (goals + assists) · POTM = player of the match · Capt = games as captain. Tap a heading to sort, or a player for their card.</p>
   ${keepers.length?`<h2 class="sec">Goalkeeper</h2>${keepers.map(k=>`<div class="card gkcard"><div class="gkname">${ICON.gk}<span>${esc(k.name)}</span></div>
     <div class="gklist"><div><span>Games in goal</span><b>${k.games}</b></div><div class="hi"><span>Clean sheets</span><b>${k.cs}</b></div><div><span>Goals conceded</span><b>${k.ga}</b></div><div><span>Conceded per game</span><b>${(k.ga/k.games).toFixed(1)}</b></div><div><span>Record in goal</span><b>${k.w}W ${k.d}D ${k.l}L</b></div></div></div>`).join('')}`:''}
+  ${(()=>{const hr=h2hRows(FM()).sort((a,b)=>b.p-a.p||a.opp.localeCompare(b.opp));return hr.length>1?`<h2 class="sec">Head-to-head</h2><div class="card scroll"><table class="h2ht"><thead><tr><th>Opponent</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Goals</th></tr></thead><tbody>${hr.map(r=>`<tr><td>${esc(r.opp)}</td><td>${r.p}</td><td>${r.w}</td><td>${r.d}</td><td>${r.l}</td><td>${r.gf}–${r.ga}</td></tr>`).join('')}</tbody></table></div>`:''})()}
   <h2 class="sec">Results</h2>
-  ${FM().map(m=>{const r=res(m),goals=(m.events||[]).filter(e=>e.t==='for'),opp=(m.events||[]).filter(e=>e.t==='against');
+  ${(MSX=milestones().byMatch,'')}${FM().map(m=>{const r=res(m),goals=(m.events||[]).filter(e=>e.t==='for'),opp=(m.events||[]).filter(e=>e.t==='against');
     return `<details class="match"><summary><span class="d"><b>${esc(fmtDate(m.date,{day:'numeric'}))}</b>${esc(fmtDate(m.date,{month:'short'}))}</span><span class="o">v ${esc(m.opp)}<small>${esc([m.ha,m.comp,m.format?m.format+'-a-side':''].filter(Boolean).join(' · '))}</small></span><span class="pill ${r}">${m.gf}–${m.ga}</span></summary>
     <div class="body">
       <p><b>${esc(fmtDate(m.date,{weekday:'long',day:'numeric',month:'long',year:'numeric'}))}</b>${m.ko?' · KO '+esc(m.ko):''}${m.venue?' · '+esc(m.venue):''}</p>
       ${goals.length?`<p><b>Our goals</b></p><ul>${goals.map(e=>`<li>${e.min!=null?e.min+"' ":''}${esc(e.scorer?e.scorer.name:'Scorer unknown')}${e.pen?` <span style="color:var(--mut)">(pen)</span>`:e.assist?` <span style="color:var(--mut)">(assist ${esc(e.assist.name)})</span>`:''}</li>`).join('')}</ul>`:''}
       ${opp.some(e=>e.min!=null)?`<p><b>${esc(m.opp)} goals</b> ${opp.filter(e=>e.min!=null).map(e=>e.min+"'").join(', ')}</p>`:''}
       ${m.potm?`<p><b>Player of the match</b> ${esc(m.potm.name)}</p>`:''}
+      ${(MSX[m.id]||[]).length?`<p class="msl">🎉 <b>Milestones</b> ${MSX[m.id].map(x=>esc(msText(x))).join(' · ')}</p>`:''}
       ${m.gk?`<p><b>In goal</b> ${esc(m.gk.name)}${m.ga===0?' · clean sheet':''}</p>`:''}
       ${m.cap?`<p><b>Captain</b> ${esc(((m.played||[]).find(p=>p.id===m.cap)||{}).name||pname(m.cap))}</p>`:''}
       ${(()=>{const lu=m.lineup||[],st=(m.played||[]).filter(p=>lu.includes(p.id)),sb=(m.played||[]).filter(p=>!lu.includes(p.id)),nm=p=>esc(p.name)+(m.cap===p.id?' (C)':'');
@@ -1308,6 +1421,7 @@ function summaryText(m){
   if(P.goals.length){L.push('');P.goals.forEach(e=>L.push(`⚽ ${e.min!=null?e.min+"' ":''}${e.scorer?e.scorer.name:'Scorer unknown'}${e.pen?' (pen)':e.assist?` (assist ${e.assist.name})`:''}`))}
   const om=P.opp.filter(e=>e.min!=null).map(e=>e.min+"'");if(om.length)L.push(`${m.opp}: ${om.join(', ')}`);
   if(m.potm)L.push('',`⭐ Player of the match: *${m.potm.name}*`);
+  const mst=milestones().byMatch[m.id]||[];if(mst.length)L.push(`🎉 ${mst.map(msText).join(' · ')}`);
   if(m.gk&&m.ga===0)L.push(`🧤 Clean sheet: ${m.gk.name}`);
   if(P.st.length)L.push('',`Started: ${P.st.map(p=>p.name).join(', ')}`);
   if(P.sb.length)L.push(`Subs: ${P.sb.map(p=>p.name).join(', ')}`);
@@ -1367,6 +1481,10 @@ async function drawSummary(m){
     x.fillStyle='#fff';fitFont(x,m.potm.name.toUpperCase(),W-300,'800',64,32);x.fillText(m.potm.name.toUpperCase(),220,y+118);
     y+=ph+30;
   }
+  // milestones
+  const mst=milestones().byMatch[m.id]||[];
+  if(mst.length&&y<H-130){x.fillStyle='#D31118';F('italic 800',28);x.fillText('🎉 MILESTONES',40,y+24);y+=36;x.fillStyle='#fff';F('600',28);
+    wrapLines(x,mst.map(q=>msText(q).toUpperCase()).join('  ·  '),W-80).slice(0,2).forEach(l=>{x.fillText(l,40,y+26);y+=36});y+=14}
   // squad
   const block=(label,list)=>{if(!list.length||y>H-90)return;x.fillStyle='#D31118';F('italic 800',28);x.fillText(label,40,y+24);y+=36;x.fillStyle='#fff';F('600',28);
     wrapLines(x,list.map(p=>p.name+(m.cap===p.id?' (C)':'')).join(', '),W-80).forEach(l=>{if(y<H-70){x.fillText(l,40,y+26);y+=36}});y+=14};
@@ -1438,6 +1556,7 @@ function cardText(id){
   if(k)L.push(`🧤 ${k.cs} clean sheets in ${k.games} games in goal`);
   if(best)L.push('Best game: '+bestLine(best));
   if(hat)L.push(`Hat-tricks: ${hat}`);
+  const pm=milestones().byPlayer[id]||[];if(pm.length)L.push('🎉 Milestones: '+pm.map(x=>x.label).join(', '));
   if(r.capt)L.push(`Captain: ${plural(r.capt,'game')}`);
   return L.join('\n');
 }
@@ -1462,7 +1581,7 @@ async function drawCard(id){
     x.fillStyle=hi?acc:'rgba(255,255,255,.08)';x.fillRect(tx,ty,tw,th);x.fillStyle=hi&&isGK?'#0b3d12':'#fff';x.textAlign='center';F('800',96);x.fillText(String(v),tx+tw/2,ty+110);
     x.fillStyle=hi?(isGK?'#0b3d12':'#fff'):'#bdb5b5';F('800',24);x.fillText(l,tx+tw/2,ty+152);x.textAlign='left'});
   // highlights
-  let y=1020;const hl=[];if(best)hl.push(['BEST GAME',bestLine(best).toUpperCase()]);if(hat)hl.push(['HAT-TRICKS',String(hat)]);if(k)hl.push(['CONCEDED PER GAME',(k.ga/k.games).toFixed(1)]);if(r.potm)hl.push(['PLAYER OF THE MATCH',plural(r.potm,'award').toUpperCase()]);if(r.capt)hl.push(['CAPTAIN',plural(r.capt,'game').toUpperCase()]);
+  let y=1020;const hl=[];const lastMs=(milestones().byPlayer[id]||[]).slice(-1)[0];if(lastMs)hl.push(['LATEST MILESTONE',(lastMs.label+(lastMs.date?' · '+fmtDate(lastMs.date,{day:'numeric',month:'short'}):'')).toUpperCase()]);if(best)hl.push(['BEST GAME',bestLine(best).toUpperCase()]);if(hat)hl.push(['HAT-TRICKS',String(hat)]);if(k)hl.push(['CONCEDED PER GAME',(k.ga/k.games).toFixed(1)]);if(r.potm)hl.push(['PLAYER OF THE MATCH',plural(r.potm,'award').toUpperCase()]);if(r.capt)hl.push(['CAPTAIN',plural(r.capt,'game').toUpperCase()]);
   hl.slice(0,3).forEach(([l,v])=>{x.fillStyle='rgba(0,0,0,.5)';x.fillRect(40,y,W-80,76);x.fillStyle=acc;x.fillRect(40,y,8,76);x.fillStyle='#bdb5b5';F('800',24);x.fillText(l,70,y+46);x.fillStyle='#fff';fitFont(x,v,W-420,'800',34,22);x.textAlign='right';x.fillText(clipText(x,v,W-420),W-64,y+50);x.textAlign='left';y+=88});
   x.fillStyle='rgba(255,255,255,.5)';F('600',22);x.fillText(S.sub.toUpperCase(),40,H-26);
   return c;
@@ -1813,7 +1932,7 @@ function startSync(label){
     if(q.empty){if(!q.metadata.fromCache){serverEmpty=true;maybeSeed()}if(!M.length){renderStats()}return}
     serverEmpty=false;
     M=q.docs.map(d=>Object.assign({id:d.id},clone(d.data())));
-    sortM();saveM();renderStats();if(!$('home').hidden)$('h-card').innerHTML=homeCard();
+    sortM();saveM();renderStats();fixExtras();if(!$('home').hidden)$('h-card').innerHTML=homeCard();
   },()=>{});
 }
 const ROLEKEY='kj-role';
