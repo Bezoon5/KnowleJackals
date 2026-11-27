@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **3.7** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **3.8** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -16,7 +16,7 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Parents & players:** no sign-in needed. It opens a locked, view-only app: the fixture can't be changed, the editing buttons and ••• menu are hidden, and only Share, Broadcast, player cards and the stats image are available. The phone remembers the choice next time.
 - **Back to the home screen:** coaches use **••• → Home screen**; parents tap the crest at the top.
 
-## The three tabs
+## The four tabs
 
 ### Line-up
 - **Next fixture:** opposition, date, **Home / Away** and **League / Cup**. Home games fill in kick-off 10:30, arrive 10:00 and West Warwickshire Sports Complex automatically. Away games ask for location, kick-off and arrival time. For any match, entering a kick-off fills in arrival 30 minutes earlier (unless you've typed your own).
@@ -44,6 +44,11 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Goalkeeper:** games in goal, clean sheets, goals conceded and record.
 - **Results:** every match with scorers, assists and who played. You can **Share summary**, **Edit** or **Delete** each one.
 - **Share image:** the whole season's stats as one picture.
+
+### Table
+- **League table** straight from FA Full-Time, with Knowle highlighted. Nobody types it in: it updates whenever the league enters results.
+- **Setting it up (once):** a team admin signs in to FA Full-Time, goes to **Media → Code snippets → Table**, copies the code, and pastes it into **Add table code** on this tab (or **••• → League table code**). It's saved to the shared database, so every coach and parent sees it.
+- **Open FA site** always opens the table on the FA website.
 
 ## The ••• menu (top right)
 What's in it depends on the tab you're on:

@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.7** (current) | 27 Nov 2026 | Fix: the ••• menu could say "Shared save not reachable yet" even when the phone was connected and sharing changes; version date corrected | [v3.7](https://bezoon5.github.io/KnowleJackals/versions/v3.7/) |
+| **3.8** (current) | 27 Nov 2026 | New **Table** tab: the league table from FA Full-Time (paste the FA's table code once, or open the FA page); Next fixture box laid out in an even two-column grid with matching box sizes | [v3.8](https://bezoon5.github.io/KnowleJackals/versions/v3.8/) |
+| 3.7 | 27 Nov 2026 | Fix: the ••• menu could say "Shared save not reachable yet" even when the phone was connected and sharing changes; version date corrected | [v3.7](https://bezoon5.github.io/KnowleJackals/versions/v3.7/) |
 | 3.6 | 27 Nov 2026 | Clear pitch removed from the ••• menu and Team size panel (the Clear button on the Line-up screen does this); README brought up to date | [v3.6](https://bezoon5.github.io/KnowleJackals/versions/v3.6/) |
 | 3.5 | 27 Nov 2026 | Broadcast screen (upright) has just two buttons, Replay and Back, each half the width; turning the phone sideways still switches to the sideways view | [v3.5](https://bezoon5.github.io/KnowleJackals/versions/v3.5/) |
 | 3.4 | 27 Nov 2026 | Line-up buttons are now Clear, Share and Broadcast: Clear empties the team sheet (Undo is in the ••• menu), Share offers Share image + details or Save image straight away; Opposition and Match date boxes line up evenly | [v3.4](https://bezoon5.github.io/KnowleJackals/versions/v3.4/) |
