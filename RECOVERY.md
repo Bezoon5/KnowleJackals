@@ -1,6 +1,6 @@
 # Knowle Jackals Matchday: recovery guide
 
-Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **3.4** (27 Nov 2026).
+Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **3.6** (27 Nov 2026).
 
 ## What's where
 
@@ -13,7 +13,7 @@ Everything needed to rebuild the app if something goes wrong. Version at the tim
 No player data is stored in the code or the GitHub history (removed on 25 Nov 2026 for data protection).
 
 ## 1. The app is broken after an update
-Fastest fix: open an earlier version's link from `CHANGELOG.md`, e.g. https://bezoon5.github.io/KnowleJackals/versions/v3.3/. Same data, no install needed.
+Fastest fix: open an earlier version's link from `CHANGELOG.md`, e.g. https://bezoon5.github.io/KnowleJackals/versions/v3.5/. Same data, no install needed.
 
 To put an older version back on the main link: copy `versions/vX.Y/index.html` over `index.html` in the repo and commit. GitHub Pages updates in a minute or two.
 

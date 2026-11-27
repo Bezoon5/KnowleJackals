@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **3.5** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **3.6** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -13,7 +13,7 @@ A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share 
 ## Home screen
 The link opens on the club home screen, showing the crest, the next fixture and the last result.
 - **Coach log in:** sign in once on each phone. After that the phone goes straight into the app.
-- **Parents & players:** no sign-in needed. It opens a locked, view-only app: the fixture can't be changed, the editing buttons and ••• menu are hidden, and only Team sheet, Broadcast, player cards and the stats image are available. The phone remembers the choice next time.
+- **Parents & players:** no sign-in needed. It opens a locked, view-only app: the fixture can't be changed, the editing buttons and ••• menu are hidden, and only Share, Broadcast, player cards and the stats image are available. The phone remembers the choice next time.
 - **Back to the home screen:** coaches use **••• → Home screen**; parents tap the crest at the top.
 
 ## The three tabs
@@ -22,11 +22,12 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Next fixture:** opposition, date, **Home / Away** and **League / Cup**. Home games fill in kick-off 10:30, arrive 10:00 and West Warwickshire Sports Complex automatically. Away games ask for location, kick-off and arrival time. For any match, entering a kick-off fills in arrival 30 minutes earlier (unless you've typed your own).
 - **Pitch:** drag players into position, or tap a sub to fill the next spot. Tap two players to swap them. Drag a player back to the bench to take them off.
 - **Squad:** add or remove players and mark the **Captain** (tap the C again to remove it), **Goalkeeper** (green shirt), **Injured** 🩹 or **Away** ✈️. Unavailable players are left out of the line-up and listed on the team sheet. Renaming a player or changing a shirt number also updates past results.
-- **Clear / Share / Broadcast** (buttons under the fixture): **Clear** takes everyone off the pitch (**••• → Undo last change** puts them back); **Share** offers **Share image + details** or **Save image** straight away.
-- **Team sheet:** a WhatsApp-ready image with the fixture, line-up, subs and who's unavailable. **Share image + details** sends the picture with the match details as its caption in one WhatsApp message (on a laptop it saves the image and copies the details).
-- **Broadcast:** a full-screen TV-style line-up graphic.
-  - **Upright** (phones): pitch and list, with **Replay** and **Back** buttons. Turn the phone sideways for the sideways view.
-  - **Sideways** (tablets, TVs, laptops, phones turned round): red side band, a full green pitch in perspective with the keeper at the bottom, players revealed one by one (0.4s apart), and a side panel with crest, fixture, substitutes, unavailable players and live score. Full screen is available.
+- **Buttons under the fixture: Clear, Share, Broadcast**
+  - **Clear** takes everyone off the pitch, ready to pick a new team. **••• → Undo last change** puts them back.
+  - **Share** offers **Share image + details**, **Save image** or **Preview**. The team sheet image shows the fixture, line-up, subs and who's unavailable. **Share image + details** sends the picture with the match details (date, kick-off, arrival and location, each on its own line) as one WhatsApp message. On a laptop it saves the image and copies the details to paste as the caption.
+  - **Broadcast** opens a full-screen TV-style line-up graphic:
+    - **Upright** (phones): pitch and list, with **Replay** and **Back** buttons. Turn the phone sideways for the sideways view.
+    - **Sideways** (tablets, TVs, laptops, phones turned round): red side band, a full green pitch in perspective with the keeper at the bottom, players revealed one by one (0.4s apart), and a side panel with crest, fixture, substitutes, unavailable players and live score. Buttons: Upright, Replay, Full screen and Share.
 
 ### Match
 - **Clock:** Kick off, Pause, Half-time and Full time. The second half restarts at the half mark.
@@ -46,7 +47,7 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 
 ## The ••• menu (top right)
 What's in it depends on the tab you're on:
-- **Line-up:** team size (7, 9 or 11-a-side) and formation, team settings (name, crest, home details), clear pitch.
+- **Line-up:** team size (7, 9 or 11-a-side) and formation, team settings (name, crest, home details, coaches), **undo last change**, share team sheet, broadcast view.
 - **Match:** half length, track substitutions, discard match.
 - **Stats:** add a past result, export results or player stats (CSV for Excel or Sheets), rename season, **close season**.
 - **Every tab:** **Back up all data** and **Restore from a backup**. The app version is shown at the bottom.
@@ -56,8 +57,9 @@ At the end of the season, use **••• → Close season** on the Stats tab. N
 
 ## Where your data is saved
 - **Shared database:** the app saves to the club's Firebase database, so every phone sees the same squad, live score and results within a second or two. It keeps working without signal and catches up when the phone is back online.
-- **Who can change things:** anyone with the link can **view**. Coaches tap **Coach sign in** (email and password, or Google) to make changes. The first time, choose **Create account** and tap the confirmation link Firebase emails you.
+- **Who can change things:** anyone with the link can **view**. Coaches tap **Coach log in** (email and password, or Google) to make changes. The first time, choose **Create account** and tap the confirmation link Firebase emails you.
 - **Coaches only:** if someone who isn't on the coaches list signs in, the app removes that account and opens the parents view. For extra safety, turn off new sign-ups in Firebase (**Authentication → Settings → User actions → Enable create (sign-up)**) once every coach has an account.
+- **Coaches list:** the admin adds or removes coaches in **••• → Team settings**, can give each coach a name (✎) and choose the **Main coach**. The database's security rules (`firestore.rules`) enforce the same list.
 - **Backups:** use **Back up all data** now and then, and always before closing a season.
 
 ## If an update breaks something
