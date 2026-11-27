@@ -2,7 +2,7 @@
 
 This turns on lock-screen notifications for parents (kick-off, goals, half-time, second half, full time). It takes about 15–20 minutes, once. You'll need a laptop and the Google account that owns the Firebase project.
 
-## 1. Switch Firebase to the Blaze plan (needs a card)
+## 1. Switch Firebase to the Blaze plan (needs a card) ✅ done
 1. Open https://console.firebase.google.com and choose **knowlejackals**.
 2. Bottom left, click **Upgrade** (next to "Spark") → choose **Blaze** → add a card.
 3. When asked, set a **budget alert of £1**. At one team's size this should stay at £0: the free allowance covers millions of function runs and notifications a month.
@@ -19,7 +19,9 @@ Already set in `functions/.env`. Only repeat this if the Firebase project is reb
 
 Firebase → **Firestore Database** → the **Data** tab shows the location near the top (or ⚙️ **Project settings → General → Default GCP resource location**). It looks like `europe-west2`, `eur3` or `nam5`. Send it to Claude so the alert code runs in the same place.
 
-## 4. Install the alert code (from your browser, nothing to install)
+## 4. Install the alert code ✅ done 27 Nov 2026
+Both functions (liveAlerts, fullTimeAlert) run on Node 22 in europe-west2, and a cleanup policy deletes old build images after 1 day. Cloud Shell is already signed in, so the `login` line isn't needed. To redeploy after changing the functions, do the steps below. The first deploy on a new project can fail with an "Eventarc Service Agent" permission error; wait 3 minutes and run it again.
+
 Claude will confirm the region first. Then:
 1. Open https://console.cloud.google.com/?project=knowlejackals, signed in with the same Google account.
 2. Click the **Cloud Shell** button (a `>_` icon, top right). A terminal opens at the bottom. Click **Authorize** if asked.
