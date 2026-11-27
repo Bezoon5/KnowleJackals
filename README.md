@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **4.2** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **4.3** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -36,7 +36,7 @@ The link opens on the club home screen, showing the crest, the next fixture and 
     - **Sideways** (tablets, TVs, laptops, phones turned round): red side band, a full green pitch in perspective with the keeper at the bottom, players revealed one by one (0.4s apart), and a side panel with crest, fixture, substitutes, unavailable players and live score. Buttons: Upright, Replay, Full screen and Share.
 
 ### Match
-- **Clock:** Kick off, Pause, Half-time and Full time. The second half restarts at the half mark.
+- **Clock:** Kick off, Pause, Half-time and Full time. **Start 2nd half** always restarts the clock at the half mark (e.g. 30:00), even if Half-time was pressed late, so second-half goal minutes stay right.
 - **Half length:** set it in the ••• menu. A banner tells you when half-time and full time are due.
 - **Goals:** Jackals goal (scorer, assist or **Penalty**, minute), Opposition goal, and **Undo last goal**.
 - **Player of the match:** chosen at full time before the result is saved, then a **match summary image** is ready to share.
