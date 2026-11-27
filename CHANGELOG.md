@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.6** (current) | 27 Nov 2026 | Clear pitch removed from the ••• menu and Team size panel (the Clear button on the Line-up screen does this); README brought up to date | [v3.6](https://bezoon5.github.io/KnowleJackals/versions/v3.6/) |
+| **3.7** (current) | 27 Nov 2026 | Fix: the ••• menu could say "Shared save not reachable yet" even when the phone was connected and sharing changes; version date corrected | [v3.7](https://bezoon5.github.io/KnowleJackals/versions/v3.7/) |
+| 3.6 | 27 Nov 2026 | Clear pitch removed from the ••• menu and Team size panel (the Clear button on the Line-up screen does this); README brought up to date | [v3.6](https://bezoon5.github.io/KnowleJackals/versions/v3.6/) |
 | 3.5 | 27 Nov 2026 | Broadcast screen (upright) has just two buttons, Replay and Back, each half the width; turning the phone sideways still switches to the sideways view | [v3.5](https://bezoon5.github.io/KnowleJackals/versions/v3.5/) |
 | 3.4 | 27 Nov 2026 | Line-up buttons are now Clear, Share and Broadcast: Clear empties the team sheet (Undo is in the ••• menu), Share offers Share image + details or Save image straight away; Opposition and Match date boxes line up evenly | [v3.4](https://bezoon5.github.io/KnowleJackals/versions/v3.4/) |
 | 3.3 | 26 Nov 2026 | Tap the captain again to remove the armband; League and Cup filters on the stats page switch on and off independently (none, one or both) | [v3.3](https://bezoon5.github.io/KnowleJackals/versions/v3.3/) |

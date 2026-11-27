@@ -1,6 +1,6 @@
 # Knowle Jackals Matchday: recovery guide
 
-Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **3.6** (27 Nov 2026).
+Everything needed to rebuild the app if something goes wrong. Version at the time of writing: **3.7** (27 Nov 2026).
 
 ## What's where
 
