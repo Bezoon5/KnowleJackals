@@ -2,7 +2,7 @@
 
 **Open the app: https://bezoon5.github.io/KnowleJackals/**
 
-Current version: **3.3** (26 Nov 2026) · [All versions and what changed](CHANGELOG.md)
+Current version: **3.4** (27 Nov 2026) · [All versions and what changed](CHANGELOG.md)
 
 A matchday app for Knowle Jackals (Under 12s, 2026/27). Pick the line-up, share the team sheet, run the match clock, log goals and assists, and keep season stats, all from your phone.
 
@@ -22,6 +22,7 @@ The link opens on the club home screen, showing the crest, the next fixture and 
 - **Next fixture:** opposition, date, **Home / Away** and **League / Cup**. Home games fill in kick-off 10:30, arrive 10:00 and West Warwickshire Sports Complex automatically. Away games ask for location, kick-off and arrival time. For any match, entering a kick-off fills in arrival 30 minutes earlier (unless you've typed your own).
 - **Pitch:** drag players into position, or tap a sub to fill the next spot. Tap two players to swap them. Drag a player back to the bench to take them off.
 - **Squad:** add or remove players and mark the **Captain** (tap the C again to remove it), **Goalkeeper** (green shirt), **Injured** 🩹 or **Away** ✈️. Unavailable players are left out of the line-up and listed on the team sheet. Renaming a player or changing a shirt number also updates past results.
+- **Clear / Share / Broadcast** (buttons under the fixture): **Clear** takes everyone off the pitch (**••• → Undo last change** puts them back); **Share** offers **Share image + details** or **Save image** straight away.
 - **Team sheet:** a WhatsApp-ready image with the fixture, line-up, subs and who's unavailable. **Share image + details** sends the picture with the match details as its caption in one WhatsApp message (on a laptop it saves the image and copies the details).
 - **Broadcast:** a full-screen TV-style line-up graphic.
   - **Upright** (phones): pitch and list.

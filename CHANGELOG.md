@@ -4,7 +4,8 @@ Each version can still be opened at its own link. If an update breaks something,
 
 | Version | Date | What changed | Open it |
 |---|---|---|---|
-| **3.3** (current) | 26 Nov 2026 | Tap the captain again to remove the armband; League and Cup filters on the stats page switch on and off independently (none, one or both) | [v3.3](https://bezoon5.github.io/KnowleJackals/versions/v3.3/) |
+| **3.4** (current) | 27 Nov 2026 | Line-up buttons are now Clear, Share and Broadcast: Clear empties the team sheet (Undo is in the ••• menu), Share offers Share image + details or Save image straight away; Opposition and Match date boxes line up evenly | [v3.4](https://bezoon5.github.io/KnowleJackals/versions/v3.4/) |
+| 3.3 | 26 Nov 2026 | Tap the captain again to remove the armband; League and Cup filters on the stats page switch on and off independently (none, one or both) | [v3.3](https://bezoon5.github.io/KnowleJackals/versions/v3.3/) |
 | 3.2 | 26 Nov 2026 | Arrival time fills in 30 minutes before kick-off for every match (home and away); kick-off has its own line in the WhatsApp team sheet message | [v3.2](https://bezoon5.github.io/KnowleJackals/versions/v3.2/) |
 | 3.1 | 26 Nov 2026 | Sideways broadcast shows the full pitch: both halves equal with markings at both ends; one Share image + details button sends the picture and match details together | [v3.1](https://bezoon5.github.io/KnowleJackals/versions/v3.1/) |
 | 3.0 | 26 Nov 2026 | Captain count column in player stats; green pitch on the sideways broadcast that fits every screen; coach names and a main coach in Team settings (Arron Cox); Matt added as third coach | [v3.0](https://bezoon5.github.io/KnowleJackals/versions/v3.0/) |
